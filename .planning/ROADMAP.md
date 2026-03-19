@@ -26,6 +26,12 @@ This roadmap is structured to preserve the approved early draft, define the guid
 
 **Goal:** Establish exactly what this guide is about and what must not be changed.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] `01-01-PLAN.md` — Freeze the approved draft as a protected prefix and add an automated boundary verifier
+- [ ] `01-02-PLAN.md` — Append the environment-pivot framing and record the editorial contract for later phases
+
 **Requirements:**
 - SCOPE-01
 - SCOPE-02
