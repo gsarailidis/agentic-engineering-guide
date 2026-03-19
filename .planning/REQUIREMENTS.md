@@ -14,7 +14,7 @@
 
 ### Draft Preservation
 
-- [ ] **PRES-01**: Existing content in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) through the `# Agentic Frameworks` section remains unchanged unless the user explicitly approves edits.
+- [x] **PRES-01**: Existing content in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) through the `# Agentic Frameworks` section remains unchanged unless the user explicitly approves edits.
 - [ ] **PRES-02**: New work integrates with the existing draft rather than replacing it.
 
 ### Guide Structure
@@ -65,7 +65,7 @@
 | SCOPE-02 | Phase 1 | Pending |
 | SCOPE-03 | Phase 1 | Pending |
 | SCOPE-04 | Phase 1 | Pending |
-| PRES-01 | Phase 1 | Pending |
+| PRES-01 | Phase 1 | Complete |
 | PRES-02 | Phase 1 | Pending |
 | STRU-01 | Phase 2 | Pending |
 | STRU-02 | Phase 2 | Pending |

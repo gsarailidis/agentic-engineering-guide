@@ -26,10 +26,10 @@ This roadmap is structured to preserve the approved early draft, define the guid
 
 **Goal:** Establish exactly what this guide is about and what must not be changed.
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] `01-01-PLAN.md` — Freeze the approved draft as a protected prefix and add an automated boundary verifier
+- [x] `01-01-PLAN.md` — Freeze the approved draft as a protected prefix and add an automated boundary verifier
 - [ ] `01-02-PLAN.md` — Append the environment-pivot framing and record the editorial contract for later phases
 
 **Requirements:**
@@ -88,6 +88,14 @@ Plans:
 - Phase 1 is planning-complete based on current discussion.
 - Phase 2 is the main writing phase.
 - Phase 3 is an editorial and verification pass, not a broad expansion phase.
+
+## Progress
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. Frame The Guide | 1/2 | In Progress |   |
+| 2. Add The New Core Sections | 0/0 | Not started | - |
+| 3. Tighten And Verify | 0/0 | Not started | - |
 
 ---
 *Last updated: 2026-03-19 after roadmap creation*
