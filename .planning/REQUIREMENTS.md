@@ -7,15 +7,15 @@
 
 ### Scope And Positioning
 
-- [ ] **SCOPE-01**: Guide defines its subject as tool-using local agents rather than agentic AI in general.
-- [ ] **SCOPE-02**: Guide uses Claude Code and Codex CLI as concrete examples without reducing the guide to product-specific documentation.
-- [ ] **SCOPE-03**: Guide stays compact and does not expand into a large handbook.
-- [ ] **SCOPE-04**: Guide remains technical, direct, and easy for newcomers to follow.
+- [x] **SCOPE-01**: Guide defines its subject as tool-using local agents rather than agentic AI in general.
+- [x] **SCOPE-02**: Guide uses Claude Code and Codex CLI as concrete examples without reducing the guide to product-specific documentation.
+- [x] **SCOPE-03**: Guide stays compact and does not expand into a large handbook.
+- [x] **SCOPE-04**: Guide remains technical, direct, and easy for newcomers to follow.
 
 ### Draft Preservation
 
 - [x] **PRES-01**: Existing content in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) through the `# Agentic Frameworks` section remains unchanged unless the user explicitly approves edits.
-- [ ] **PRES-02**: New work integrates with the existing draft rather than replacing it.
+- [x] **PRES-02**: New work integrates with the existing draft rather than replacing it.
 
 ### Guide Structure
 
@@ -61,12 +61,12 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCOPE-01 | Phase 1 | Pending |
-| SCOPE-02 | Phase 1 | Pending |
-| SCOPE-03 | Phase 1 | Pending |
-| SCOPE-04 | Phase 1 | Pending |
+| SCOPE-01 | Phase 1 | Complete |
+| SCOPE-02 | Phase 1 | Complete |
+| SCOPE-03 | Phase 1 | Complete |
+| SCOPE-04 | Phase 1 | Complete |
 | PRES-01 | Phase 1 | Complete |
-| PRES-02 | Phase 1 | Pending |
+| PRES-02 | Phase 1 | Complete |
 | STRU-01 | Phase 2 | Pending |
 | STRU-02 | Phase 2 | Pending |
 | STRU-03 | Phase 2 | Pending |
