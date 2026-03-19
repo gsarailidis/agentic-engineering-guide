@@ -49,7 +49,7 @@ created: 2026-03-19
 
 ## Wave 0 Requirements
 
-- [ ] `.planning/phases/01-frame-the-guide/01-protected-prefix.md` — snapshot of protected draft through `# Agentic Frameworks`
+- [ ] `.planning/phases/01-frame-the-guide/01-protected-prefix.md` — snapshot of protected draft before `# Agentic Frameworks`
 - [ ] `.planning/phases/01-frame-the-guide/01-protected-prefix.sha256` — checksum for protected snapshot
 - [ ] `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh` — boundary verifier script
 - [ ] `.planning/phases/01-frame-the-guide/01-framing-contract.md` — explicit framing contract for Phase 1

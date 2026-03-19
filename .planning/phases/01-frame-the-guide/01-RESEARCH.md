@@ -45,13 +45,13 @@ None — discussion stayed within phase scope
 | SCOPE-02 | Guide uses Claude Code and Codex CLI as concrete examples without reducing the guide to product-specific documentation. | Use a pattern-first, examples-second structure with Claude Code and Codex CLI named as representative implementations. |
 | SCOPE-03 | Guide stays compact and does not expand into a large handbook. | Treat Phase 1 as boundary-setting only; do not add tutorial, comparison, or appendix content here. |
 | SCOPE-04 | Guide remains technical, direct, and easy for newcomers to follow. | Keep the framing precise, avoid theory detours, and organize later sections around execution patterns rather than product features. |
-| PRES-01 | Existing content in AgenticAIGuide.md through the `# Agentic Frameworks` section remains unchanged unless the user explicitly approves edits. | Preserve the current draft as a protected block and plan verification around boundary checks before any edits. |
+| PRES-01 | Existing content in AgenticAIGuide.md before the `# Agentic Frameworks` heading remains unchanged unless the user explicitly approves edits. | Preserve the current draft as a protected block and plan verification around boundary checks before any edits. |
 | PRES-02 | New work integrates with the existing draft rather than replacing it. | Add an environment-pivot transition after `# Agentic Frameworks` and build later sections from that handoff instead of rewriting the draft. |
 </phase_requirements>
 
 ## Summary
 
-Phase 1 is not a feature-writing phase. It is a framing and boundary-setting phase for a docs-only project. The planner should treat the existing draft in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) through `# Agentic Frameworks` as protected source material, then define exactly how the rest of the guide should pivot from generic agentic concepts to terminal-native local agent environments.
+Phase 1 is not a feature-writing phase. It is a framing and boundary-setting phase for a docs-only project. The planner should treat the existing draft in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) before `# Agentic Frameworks` as protected source material, then define exactly how the rest of the guide should pivot from generic agentic concepts to terminal-native local agent environments.
 
 The core implementation choice is to use an environment-pivot transition as the hinge. That lets the guide acknowledge generic agentic concepts already present in the draft, then explicitly narrow to the real subject: agents embedded in local execution environments with filesystem access, shell access, tools, and persistent artifacts. Claude Code and Codex CLI should be used as examples of that pattern, but the guide must stay pattern-oriented rather than feature-oriented.
 
@@ -90,7 +90,7 @@ This means the plan should optimize for three outputs: a locked framing statemen
 
 ### Recommended Project Structure
 ```text
-AgenticAIGuide.md                          # Source guide; preserve content through "# Agentic Frameworks"
+AgenticAIGuide.md                          # Source guide; preserve content before "# Agentic Frameworks"
 .planning/
 ├── PROJECT.md                             # Project framing and scope
 ├── REQUIREMENTS.md                        # Requirement truth
@@ -101,7 +101,7 @@ AgenticAIGuide.md                          # Source guide; preserve content thro
 ```
 
 ### Pattern 1: Protected Header, Additive Handoff
-**What:** Treat everything through `# Agentic Frameworks` as a fixed preface, then add a transition that narrows the guide to local tool-using agents.
+**What:** Treat everything before `# Agentic Frameworks` as a fixed preface, then add a transition that narrows the guide to local tool-using agents.
 **When to use:** Always for Phase 1; this is the core preservation strategy.
 **Example:**
 ```markdown
@@ -203,7 +203,7 @@ Source: Anthropic Claude Code overview and OpenAI Codex CLI overview, cross-chec
 
 ### Preservation Rule Pattern
 ```markdown
-Protected boundary: preserve all existing content through `# Agentic Frameworks`.
+Protected boundary: preserve all existing content before `# Agentic Frameworks`.
 New framing work starts after that point unless the user explicitly approves upstream edits.
 ```
 Source: [REQUIREMENTS.md](/home/nick/wd/agentic_guide/.planning/REQUIREMENTS.md), [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md), [STATE.md](/home/nick/wd/agentic_guide/.planning/STATE.md)
@@ -249,7 +249,7 @@ Source: [REQUIREMENTS.md](/home/nick/wd/agentic_guide/.planning/REQUIREMENTS.md)
 | SCOPE-02 | Claude Code and Codex CLI appear as examples, not sole subject | manual-only | `rg -n "Claude Code|Codex CLI" AgenticAIGuide.md` | ✅ |
 | SCOPE-03 | Guide stays bounded and avoids handbook growth | manual-only | `wc -l AgenticAIGuide.md` | ✅ |
 | SCOPE-04 | Tone remains technical and newcomer-friendly | manual-only | `sed -n '1,220p' AgenticAIGuide.md` | ✅ |
-| PRES-01 | Protected content through `# Agentic Frameworks` remains unchanged without approval | manual-only | `sed -n '1,/^# Agentic Frameworks$/p' AgenticAIGuide.md` | ✅ |
+| PRES-01 | Protected content before `# Agentic Frameworks` remains unchanged without approval | manual-only | `head -n 251 AgenticAIGuide.md` | ✅ |
 | PRES-02 | New work is additive after the protected boundary | manual-only | `rg -n "^# Agentic Frameworks" AgenticAIGuide.md` | ✅ |
 
 ### Sampling Rate

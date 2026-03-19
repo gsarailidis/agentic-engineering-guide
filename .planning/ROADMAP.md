@@ -43,7 +43,7 @@ Plans:
 **Success criteria:**
 1. The guide is explicitly positioned around local tool-using agents rather than agentic AI in general.
 2. Claude Code and Codex CLI are used as examples without collapsing the guide into product documentation.
-3. The existing draft through `# Agentic Frameworks` is treated as protected unless the user explicitly approves edits.
+3. The existing draft before `# Agentic Frameworks` is treated as protected unless the user explicitly approves edits.
 
 ### Phase 2: Add The New Core Sections
 

@@ -263,6 +263,14 @@ As such, we will focus on it here.
 
 Please note that while Claude Code is focused on software engineering tasks, the same ideas can be used for many other domains.
 
+## From Frameworks To Environments
+
+This guide is about local tool-using agents, not agentic AI in general. The distinctive subject is the local execution environment: the point where the model stops being only a reasoning component and starts operating inside a working system. In that environment, the model gets filesystem access, shell access, structured tools, and persistent artifacts. Claude Code and Codex CLI are concrete examples of this pattern, not the subject of product documentation.
+
+## What The Rest Of This Guide Covers
+
+The rest of this guide focuses on operating patterns, artifacts, skills, delegation, verification, and design. Claude Code will serve as the deeper concrete example at least once so the pattern is easy to see in one real environment, while Codex CLI will serve as a confirming example showing that the pattern generalizes. This is not a tutorial, comparison matrix, or provider survey.
+
 ---
 
 ## 1. What Claude Code actually is
@@ -480,11 +488,3 @@ Programming environments are ideal because:
 * version control
 
 This makes **software engineering one of the first domains where agentic AI works well.**
-
-## From Frameworks To Environments
-
-This guide is about local tool-using agents, not agentic AI in general. The distinctive subject is the local execution environment: the point where the model stops being only a reasoning component and starts operating inside a working system. In that environment, the model gets filesystem access, shell access, structured tools, and persistent artifacts. Claude Code and Codex CLI are concrete examples of this pattern, not the subject of product documentation.
-
-## What The Rest Of This Guide Covers
-
-The rest of this guide focuses on operating patterns, artifacts, skills, delegation, verification, and design. Claude Code will serve as the deeper concrete example at least once so the pattern is easy to see in one real environment, while Codex CLI will serve as a confirming example showing that the pattern generalizes. This is not a tutorial, comparison matrix, or provider survey.

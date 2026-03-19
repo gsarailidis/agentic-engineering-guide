@@ -50,7 +50,7 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 ### Decisions
 - [Phase 01]: Store the protected-prefix checksum with a repo-relative path so root-level verification works.
 - [Phase 01]: Use snapshot line count plus diff-based verification in a POSIX shell script before later guide edits.
-- [Phase 01-frame-the-guide]: Kept the guide additive by appending the new framing at the actual file end so the protected prefix verifier remains valid.
+- [Phase 01-frame-the-guide]: Corrected the protected boundary to end before `# Agentic Frameworks`, allowing the framing handoff to live inside the frameworks portion of the guide.
 - [Phase 01-frame-the-guide]: Locked Claude Code as the deeper concrete example while keeping Codex CLI as a confirming pattern example.
 
 ### Pending Todos

@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-This phase defines how the guide is framed and bounded. It locks the scope, examples, transition strategy, and preservation constraints that will guide later writing. It does not add new content sections yet and does not change the protected material in `AgenticAIGuide.md` through `# Agentic Frameworks`.
+This phase defines how the guide is framed and bounded. It locks the scope, examples, transition strategy, and preservation constraints that will guide later writing. It does not add new content sections yet and does not change the protected material in `AgenticAIGuide.md` before `# Agentic Frameworks`.
 
 </domain>
 
@@ -56,7 +56,7 @@ This phase defines how the guide is framed and bounded. It locks the scope, exam
 - `.planning/ROADMAP.md` — fixed phase boundary for Phase 1
 
 ### Source draft
-- `AgenticAIGuide.md` — existing guide draft; content through `# Agentic Frameworks` is protected unless the user explicitly approves edits
+- `AgenticAIGuide.md` — existing guide draft; content before `# Agentic Frameworks` is protected unless the user explicitly approves edits
 
 </canonical_refs>
 

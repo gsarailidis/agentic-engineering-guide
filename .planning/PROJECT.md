@@ -18,7 +18,7 @@ Give newcomers a precise mental model of terminal-native local agents and the pa
 
 ### Active
 
-- [ ] Preserve the current draft in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) exactly as written through the `# Agentic Frameworks` section unless explicit approval is given for changes there.
+- [ ] Preserve the current draft in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) exactly as written before the `# Agentic Frameworks` heading unless explicit approval is given for changes there.
 - [ ] Define the guide around the broader category of tool-using local agents, with Claude Code and Codex CLI as the main examples because they expose the relevant patterns clearly.
 - [ ] Keep the guide compact, technical, direct, and easy for newcomers to follow from basics to practical design understanding.
 - [ ] Cover the specific post-framework sections already agreed: terminal-native agent environments, core operating patterns, artifacts as control surfaces, skills and reusable workflows, delegation and parallel subagents, verification/recovery/failure modes, and how to design with these patterns.
@@ -32,7 +32,7 @@ Give newcomers a precise mental model of terminal-native local agents and the pa
 
 ## Context
 
-The starting point is an existing draft file, [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md). The user is already largely satisfied with everything up to the `# Agentic Frameworks` section and explicitly requires that material to remain unchanged unless they later grant explicit permission for edits.
+The starting point is an existing draft file, [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md). The user is already largely satisfied with everything before the `# Agentic Frameworks` heading and explicitly requires that material to remain unchanged unless they later grant explicit permission for edits.
 
 The missing work is not a rewrite of the whole document. It is a reframing of the guide after the existing sections so the rest of the document teaches the distinctive patterns exposed by environments such as Claude Code and Codex CLI: filesystem access, shell execution, structured tools, skills, persistent artifacts, delegated work, and verification/recovery loops.
 
@@ -41,7 +41,7 @@ The audience is a newcomer who needs a clear mental model and a well-rounded pic
 ## Constraints
 
 - **Scope**: Keep the guide small — it should orient and sharpen understanding without turning into a handbook.
-- **Editorial**: Preserve all existing content through `# Agentic Frameworks` unless the user explicitly approves changes — this is a hard boundary.
+- **Editorial**: Preserve all existing content before `# Agentic Frameworks` unless the user explicitly approves changes — this is a hard boundary.
 - **Audience**: Write for newcomers, but assume they can handle technical reasoning if it is clearly explained.
 - **Style**: Technical, direct, and unsentimental — avoid hype, fluff, and vague claims.
 - **Examples**: Use Claude Code and Codex CLI as concrete examples without collapsing the guide into product-specific documentation.
@@ -52,7 +52,7 @@ The audience is a newcomer who needs a clear mental model and a well-rounded pic
 |----------|-----------|---------|
 | Focus on local tool-using agents rather than agentic AI in general | The user's actual interest is in the novel patterns enabled by local execution environments | — Pending |
 | Use Claude Code and Codex CLI as the main examples | They are representative and have developed the relevant patterns clearly | — Pending |
-| Preserve the draft through `# Agentic Frameworks` unchanged by default | The user is already satisfied with that material and wants strict control over edits there | — Pending |
+| Preserve the draft before `# Agentic Frameworks` unchanged by default | The user is already satisfied with that material and wants strict control over edits there | — Pending |
 | Keep the guide compact and non-tutorial | The goal is conceptual readiness and design understanding, not implementation onboarding | — Pending |
 
 ---

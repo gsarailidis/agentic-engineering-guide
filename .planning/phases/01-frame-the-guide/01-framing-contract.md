@@ -10,7 +10,7 @@ Claude Code and Codex CLI are pattern examples rather than the main subject. Cla
 
 ## Protected Boundary
 
-Everything captured in `01-protected-prefix.md` is frozen. New writing starts after that prefix.
+Everything captured in `01-protected-prefix.md` is frozen. That protected prefix ends immediately before `# Agentic Frameworks`, so content from `# Agentic Frameworks` onward may be revised.
 
 ## Phase 2 Targets
 
