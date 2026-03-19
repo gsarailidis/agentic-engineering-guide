@@ -19,16 +19,16 @@ created: 2026-03-19
 |----------|-------|
 | **Framework** | shell-based verification for docs-only repo |
 | **Config file** | none — existing shell commands cover this phase |
-| **Quick run command** | `python3 .planning/phases/01-frame-the-guide/verify_protected_boundary.py` |
-| **Full suite command** | `python3 .planning/phases/01-frame-the-guide/verify_protected_boundary.py && rg -n "local tool-using agents|tool-using local agents|Claude Code|Codex CLI" AgenticAIGuide.md && sed -n '1,/^# Agentic Frameworks$/p' AgenticAIGuide.md >/tmp/phase1-protected-prefix.txt && test -s /tmp/phase1-protected-prefix.txt` |
+| **Quick run command** | `bash .planning/phases/01-frame-the-guide/verify-protected-boundary.sh` |
+| **Full suite command** | `bash .planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "local tool-using agents|tool-using local agents|Claude Code|Codex CLI" AgenticAIGuide.md .planning/phases/01-frame-the-guide/01-framing-contract.md` |
 | **Estimated runtime** | ~5 seconds |
 
 ---
 
 ## Sampling Rate
 
-- **After every task commit:** Run `python3 .planning/phases/01-frame-the-guide/verify_protected_boundary.py`
-- **After every plan wave:** Run `python3 .planning/phases/01-frame-the-guide/verify_protected_boundary.py && rg -n "local tool-using agents|tool-using local agents|Claude Code|Codex CLI" AgenticAIGuide.md`
+- **After every task commit:** Run `bash .planning/phases/01-frame-the-guide/verify-protected-boundary.sh`
+- **After every plan wave:** Run `bash .planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "local tool-using agents|tool-using local agents|Claude Code|Codex CLI" AgenticAIGuide.md .planning/phases/01-frame-the-guide/01-framing-contract.md`
 - **Before `$gsd-verify-work`:** Full suite must be green
 - **Max feedback latency:** 10 seconds
 
@@ -38,10 +38,10 @@ created: 2026-03-19
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 1-01-01 | 01 | 1 | PRES-01 | script | `python3 .planning/phases/01-frame-the-guide/verify_protected_boundary.py` | ❌ W0 | ⬜ pending |
-| 1-01-02 | 01 | 1 | PRES-01 | grep | `test -f .planning/phases/01-frame-the-guide/protected-prefix.sha256 && test -f .planning/phases/01-frame-the-guide/protected-prefix.md` | ❌ W0 | ⬜ pending |
+| 1-01-01 | 01 | 1 | PRES-01 | script | `test -f .planning/phases/01-frame-the-guide/01-protected-prefix.md && test -f .planning/phases/01-frame-the-guide/01-protected-prefix.sha256 && cmp -s AgenticAIGuide.md .planning/phases/01-frame-the-guide/01-protected-prefix.md && sha256sum -c .planning/phases/01-frame-the-guide/01-protected-prefix.sha256` | ❌ W0 | ⬜ pending |
+| 1-01-02 | 01 | 1 | PRES-01 | script | `bash .planning/phases/01-frame-the-guide/verify-protected-boundary.sh` | ❌ W0 | ⬜ pending |
 | 1-02-01 | 02 | 2 | SCOPE-01 | grep | `rg -n "local tool-using agents|tool-using local agents" AgenticAIGuide.md` | ✅ | ⬜ pending |
-| 1-02-02 | 02 | 2 | SCOPE-02 | grep | `rg -n "Claude Code|Codex CLI" AgenticAIGuide.md .planning/phases/01-frame-the-guide/PHASE-1-FRAMING-CONTRACT.md` | ❌ W0 | ⬜ pending |
+| 1-02-02 | 02 | 2 | SCOPE-02 | grep | `rg -n "Claude Code|Codex CLI" AgenticAIGuide.md .planning/phases/01-frame-the-guide/01-framing-contract.md` | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -49,10 +49,10 @@ created: 2026-03-19
 
 ## Wave 0 Requirements
 
-- [ ] `.planning/phases/01-frame-the-guide/protected-prefix.md` — snapshot of protected draft through `# Agentic Frameworks`
-- [ ] `.planning/phases/01-frame-the-guide/protected-prefix.sha256` — checksum for protected snapshot
-- [ ] `.planning/phases/01-frame-the-guide/verify_protected_boundary.py` — boundary verifier script
-- [ ] `.planning/phases/01-frame-the-guide/PHASE-1-FRAMING-CONTRACT.md` — explicit framing contract for Phase 1
+- [ ] `.planning/phases/01-frame-the-guide/01-protected-prefix.md` — snapshot of protected draft through `# Agentic Frameworks`
+- [ ] `.planning/phases/01-frame-the-guide/01-protected-prefix.sha256` — checksum for protected snapshot
+- [ ] `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh` — boundary verifier script
+- [ ] `.planning/phases/01-frame-the-guide/01-framing-contract.md` — explicit framing contract for Phase 1
 
 ---
 
