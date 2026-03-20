@@ -29,9 +29,9 @@
 
 ### Concrete Framework Example
 
-- [ ] **GSD-01**: Guide describes GSD (Get Shit Done) as a concrete workflow framework built on top of a local tool-using agent environment.
+- [x] **GSD-01**: Guide describes GSD (Get Shit Done) as a concrete workflow framework built on top of a local tool-using agent environment.
 - [ ] **GSD-02**: Guide includes a categorized reference list of the GSD skills named by the user, with short descriptions.
-- [ ] **GSD-03**: Guide explains how GSD makes planning, execution, validation, workflow control, and maintenance explicit without turning the document into product documentation.
+- [x] **GSD-03**: Guide explains how GSD makes planning, execution, validation, workflow control, and maintenance explicit without turning the document into product documentation.
 
 ### Reader Outcome
 
@@ -80,9 +80,9 @@
 | STRU-05 | Phase 2 | Complete |
 | STRU-06 | Phase 2 | Complete |
 | STRU-07 | Phase 2 | Complete |
-| GSD-01 | Phase 02.1 | Pending |
+| GSD-01 | Phase 02.1 | Complete |
 | GSD-02 | Phase 02.1 | Pending |
-| GSD-03 | Phase 02.1 | Pending |
+| GSD-03 | Phase 02.1 | Complete |
 | OUTC-01 | Phase 3 | Pending |
 | OUTC-02 | Phase 3 | Pending |
 | OUTC-03 | Phase 3 | Pending |
@@ -98,4 +98,4 @@
 
 ---
 *Requirements defined: 2026-03-19*
-*Last updated: 2026-03-20 after completing 02-02-PLAN.md*
+*Last updated: 2026-03-20 after completing 02.1-01-PLAN.md*
