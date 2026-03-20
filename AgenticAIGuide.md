@@ -314,3 +314,23 @@ Delegation is not magic autonomy. It is the deliberate act of carving a larger o
 Good delegation depends on artifact-backed decomposition. A parent agent can create a task file, pass along the current plan, point to the relevant state file, and require a summary on completion. Those artifacts keep the delegated work aligned with the main objective and make the result reviewable when control returns. Without them, sub-work becomes opaque and parallel execution turns into guesswork.
 
 Parallel subagents matter because many repo tasks separate cleanly: one agent can inspect tests while another reviews implementation details, or one can draft a migration note while another verifies the changed commands. The gain does not come from spawning more reasoning at random. It comes from choosing explicit boundaries, keeping each subagent's context narrow, and using summaries and checklists to merge the work safely. Delegation, in other words, is an orchestration choice built on top of environment access, reusable workflows, and durable control surfaces.
+
+## Verification, Recovery, And Failure Modes
+
+Reliable local-agent systems do not treat verification as cleanup after the interesting work is done. Checking the result is part of the operating environment itself. If an agent can read files, run commands, and change a repository, it also needs explicit ways to test those changes, compare outputs against expectations, surface failures, and decide what happens next.
+
+That is why verification, retries, rollback, and bounded recovery belong in the same mental model as tools and artifacts. A good environment exposes the checks that matter: run the targeted test suite, inspect the diff, confirm the protected boundary still holds, compare generated files against a contract, or require a review step before continuing. When a check fails, the system should not hide that failure behind confident prose. It should make the failure visible, preserve the evidence, and constrain the next action.
+
+Recovery works best when it is explicit and limited. Retry only when the system has learned something from the last attempt. Roll back when a change is clearly wrong or when a checkpoint proves the current path is unsafe. Use summaries, state files, and checklists to record what failed, what was restored, and what remains unresolved. Bounded recovery matters because an agent that can always "just try again" can also drift, damage unrelated work, or bury the real problem under repeated edits.
+
+The same logic applies to delegated work. A subagent should not return only an answer. It should return evidence: what it changed, what it checked, what failed, and whether the result is ready to merge back into the parent task. Reliable systems expose these controls on purpose. They make success verifiable, failure visible, and recovery legible.
+
+## Designing With These Patterns
+
+Taken together, these patterns describe an operating system for local agents rather than a bag of isolated features. The environment provides the working surface. Operating loops turn that surface into disciplined action. Artifacts preserve intent and control execution across time. Skills and workflows reduce improvisation. Delegation scales the work through bounded sub-tasks. Verification and recovery keep the whole system honest when reality pushes back.
+
+Designing with these patterns means deciding how those pieces reinforce each other. Which artifacts define scope before work starts? Which checks are mandatory before a task is considered done? Which workflows are common enough to package as reusable skills? Which tasks are safe to delegate in parallel, and what evidence must come back before their output is trusted? Those are design questions, not product questions.
+
+Claude Code and Codex CLI help make the pattern concrete because they show that the useful unit is not a chat session but a controlled local environment with tools, permissions, artifacts, and execution rules. The important design move is to compose those elements so the agent can act productively without becoming opaque or unbounded.
+
+Once that vocabulary is clear, higher-level workflow frameworks become easier to reason about. They are built from the same primitives: environments, artifacts, reusable workflows, scoped delegation, and explicit verification. That is the bridge into the next layer of the guide.
