@@ -324,3 +324,11 @@ Designing with these patterns means deciding how those pieces reinforce each oth
 Claude Code and Codex CLI help make the pattern concrete because they show that the useful unit is not a chat session but a controlled local environment with tools, permissions, artifacts, and execution rules. The important design move is to compose those elements so the agent can act productively without becoming opaque or unbounded.
 
 Once that vocabulary is clear, higher-level workflow frameworks become easier to reason about. They are built from the same primitives: environments, artifacts, reusable workflows, scoped delegation, and explicit verification. That is the bridge into the next layer of the guide.
+
+## GSD As A Workflow Framework
+
+GSD (Get Shit Done) is a workflow framework layered on top of a local tool-using agent environment. It does not replace the environment-level contract described above. It assumes that contract already exists: the agent can read and write artifacts, run bounded commands, reuse higher-level workflows, delegate scoped work, and verify outcomes against the actual workspace.
+
+What GSD adds is a stronger operating structure around those local-agent primitives. Instead of treating planning, execution, validation, and workflow control as habits the operator must recreate every time, it turns them into explicit artifacts and reusable skills. Phase files, state files, summaries, requirement maps, and execution workflows become part of the control surface, not just notes left behind after the fact.
+
+That is the important layer boundary. Claude Code or Codex CLI gives the agent an environment in which work can happen; GSD sits above that layer and organizes how work moves from discovery into planning, execution, verification, and maintenance. In other words, it is a concrete example of what happens when the patterns from Phase 2 are packaged into a repeatable workflow system.
