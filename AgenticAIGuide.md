@@ -273,218 +273,26 @@ The rest of this guide focuses on operating patterns, artifacts, skills, delegat
 
 ---
 
-## 1. What Claude Code actually is
+## Terminal-Native Agent Environments
 
-Claude Code is an **agentic coding system developed by Anthropic**.
+The important shift is not that a model can call a tool in the abstract. It is that the model operates inside a local working environment with a filesystem, a shell, structured tools, permission boundaries, and durable working state. Once those pieces exist together, the model stops acting like a detached text generator and starts acting like an operator inside a real system.
 
-It is essentially:
+That environment matters because it gives the agent something concrete to inspect and change. Files can be read and rewritten. Commands can expose build output, test failures, or repository structure. Structured tools can constrain how search, edits, and execution happen. Permissions determine which actions are automatic, which require approval, and which are blocked entirely. Durable working state means the system can leave behind plans, task files, and status markers that survive beyond one response.
 
-**An AI agent that operates directly inside the developer’s working environment (terminal / IDE) and performs multi-step software engineering tasks.**
+This is why terminal-native agents feel different from plain chat. The model is not only predicting text about the task. It is grounded in the task's actual workspace and can operate on the same project surfaces a human operator would use. Claude Code is a clear example because it can inspect repositories, run commands, and write artifacts in the local environment. Codex CLI confirms that the pattern is broader than one product: the important part is the environment contract, not the brand.
 
-Unlike traditional coding assistants, **it behaves like an engineer executing tasks**, not just a code generator. It can:
+## Core Operating Patterns
 
-* read an entire codebase
-* plan changes
-* modify files
-* run commands
-* run tests
-* interact with git
-* submit pull requests
+Once an agent is grounded in a real environment, its work tends to converge on the same loop: inspect, plan, act, check, iterate. This is not abstract AI theory. It is the practical rhythm of making changes in a repository without losing control.
 
-All through **natural language instructions**.
+Inspect means looking at the current state before making assumptions: reading files, searching for handlers, listing directories, checking config, or reviewing prior notes. Plan means turning that inspection into an explicit next-step sequence instead of improvising every move. Act means editing files, running commands, creating artifacts, or invoking other tools. Check means comparing the result against the actual system by running tests, reading errors, or validating the changed files. Iterate means using that feedback to tighten the plan and continue until the task is actually complete.
 
----
+In real repo work, the loop might look like this: inspect the authentication flow, plan a rate-limiting change, act by editing middleware and tests, check by running the relevant suite, then iterate when the first pass exposes a missed edge case. The value is not that the loop exists. The value is that the environment gives each stage concrete feedback. Plans can be compared against files, actions can be checked against commands, and the next iteration is driven by system evidence rather than optimism.
 
-## 2. What Claude Code actually does internally
+## Artifacts As Control Surfaces
 
-Claude Code follows a **structured agent loop**.
+The environment becomes much more reliable once execution is shaped by durable artifacts. Plans, task files, summaries, state files, and checklists are not just logs left behind by the work. They are control surfaces that influence what happens next.
 
-Typical internal cycle:
+A plan constrains the action space by making intended steps explicit. A task file can scope one unit of work so execution does not drift across unrelated problems. A summary records what changed, what was verified, and what still needs attention, which makes handoff and recovery possible. A state file preserves position across sessions so the agent or operator knows what phase is active and which decisions are already locked. A checklist turns vague completion into visible criteria that can be checked instead of guessed.
 
-```
-User request
-   ↓
-Plan the task
-   ↓
-Explore codebase
-   ↓
-Call tools (search, edit, run tests)
-   ↓
-Evaluate results
-   ↓
-Iterate until task complete
-```
-
-Example workflow:
-
-User request:
-
-> “Add rate limiting to the login endpoint.”
-
-Agent behavior:
-
-1. Search the codebase for the login handler.
-2. Identify the framework (FastAPI, Express, etc).
-3. Plan the change.
-4. Edit multiple files.
-5. Update dependencies.
-6. Run tests.
-7. Commit changes.
-8. Propose a pull request.
-
-Claude Code can also **run CLI tools directly**, integrating with git, build tools, and deployment systems.
-
----
-
-# 3. Why Claude Code is a good example of agentic engineering
-
-Claude Code exposes the **engineering structures needed to make agents reliable**.
-
-These structures include:
-
-### 1. Controlled tool use
-
-The agent does not hallucinate code edits.
-
-It must use specific tools:
-
-* file search
-* file editing
-* command execution
-* git operations
-
-This prevents arbitrary output generation.
-
----
-
-### 2. Explicit planning
-
-Claude Code often creates **structured plans before acting**.
-
-Example:
-
-```
-Plan:
-1. Locate authentication module
-2. Add middleware
-3. Update route
-4. Add tests
-5. Run test suite
-```
-
-This reduces failure rates.
-
----
-
-### 3. Environment grounding
-
-The agent works with the **real project environment**:
-
-* file system
-* dependencies
-* terminal commands
-* test suites
-
-This grounds the reasoning loop.
-
----
-
-### 4. Human approval layer
-
-By default:
-
-* file edits require approval
-* commands require approval
-
-This prevents destructive actions.
-
----
-
-### 5. Iterative reasoning
-
-Claude Code can run **long chains of reasoning and execution**, sometimes for minutes.
-
-This is critical for complex tasks.
-
----
-
-# 4. Architectural components of a modern agentic system
-
-Systems like Claude Code rely on a **small number of architectural primitives**.
-
-These are the key concepts you asked to define.
-
----
-
----
-
-# 6. The real design pattern behind Claude Code
-
-Claude Code follows a **simple but powerful architecture**:
-
-```
-User Goal
-   ↓
-Agent Harness
-   ↓
-LLM reasoning
-   ↓
-Tool use
-   ↓
-Environment feedback
-   ↓
-Iterate
-```
-
-The key idea:
-
-The LLM **does not directly generate the final output**.
-
-Instead it **controls actions in an environment**.
-
----
-
-# 7. Why skills are becoming a major idea
-
-Large agent systems struggle with:
-
-* long reasoning chains
-* unreliable planning
-* high token cost
-
-Skills solve this.
-
-Instead of planning everything:
-
-```
-Agent calls skill:
-"implement feature"
-```
-
-Skill internally executes:
-
-```
-search code
-edit files
-run tests
-commit changes
-```
-
-This is **hierarchical agency**.
-
----
-
-# 8. What Claude Code proves
-
-Claude Code demonstrated something important:
-
-**Agentic systems become powerful when the environment is simple and structured.**
-
-Programming environments are ideal because:
-
-* file system
-* deterministic tools
-* test feedback
-* version control
-
-This makes **software engineering one of the first domains where agentic AI works well.**
+These artifacts matter because local-agent work is long-running and interruptible. The system needs ways to preserve intent outside the model's short-term context window. When Claude Code writes a plan before editing or leaves a summary after execution, the artifact is doing real coordination work. When a Codex CLI workflow reads a state file before continuing, the same pattern appears again. The artifact is not incidental output. It is part of the control system that keeps execution legible, resumable, and bounded.
