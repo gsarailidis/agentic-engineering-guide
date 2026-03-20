@@ -50,6 +50,12 @@ Plans:
 
 **Goal:** Add the missing conceptual body of the guide after the existing draft material.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] `02-01-PLAN.md` — Rewrite the post-framework body from environments through reusable workflows and delegation
+- [ ] `02-02-PLAN.md` — Finish the failure-handling and design sections, then tighten the full rewritten body
+
 **Requirements:**
 - STRU-01
 - STRU-02
