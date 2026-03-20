@@ -332,3 +332,13 @@ GSD (Get Shit Done) is a workflow framework layered on top of a local tool-using
 What GSD adds is a stronger operating structure around those local-agent primitives. Instead of treating planning, execution, validation, and workflow control as habits the operator must recreate every time, it turns them into explicit artifacts and reusable skills. Phase files, state files, summaries, requirement maps, and execution workflows become part of the control surface, not just notes left behind after the fact.
 
 That is the important layer boundary. Claude Code or Codex CLI gives the agent an environment in which work can happen; GSD sits above that layer and organizes how work moves from discovery into planning, execution, verification, and maintenance. In other words, it is a concrete example of what happens when the patterns from Phase 2 are packaged into a repeatable workflow system.
+
+### A Short GSD Lifecycle Walkthrough
+
+`gsd-progress` is the usual starting point because it surfaces the current project state, open phase position, and what kind of work is already in motion. If the repo still needs shared context, `gsd-map-codebase` turns the raw codebase into a durable map the later planning steps can reuse instead of rediscovering structure on each pass.
+
+From there, `gsd-discuss-phase` narrows a phase to a clear objective and boundary, and `gsd-research-phase` gathers the implementation evidence needed to make that scope defensible. `gsd-plan-phase` then turns that material into explicit execution artifacts, so planning stops being implicit operator memory and becomes part of the workflow's visible state.
+
+Once the phase is defined, `gsd-execute-phase` carries the work through implementation with the plan, task boundaries, and verification hooks already attached. `gsd-add-tests` extends that execution path by making missing coverage explicit rather than leaving correctness to a final hopeful check.
+
+After implementation, `gsd-verify-work` closes the loop at the user-facing level by checking whether the built result actually behaves as intended, while `gsd-validate-phase` audits whether the phase met its own structural and verification contract. A continuity skill such as `gsd-pause-work` or `gsd-complete-milestone` then makes workflow control explicit again by either preserving resumable state or formally closing the current slice of work.
