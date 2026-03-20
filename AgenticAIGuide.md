@@ -251,17 +251,7 @@ This allows learning across tasks.
 
 # Agentic Frameworks
 
-Recent agentic frameworks come in many forms. Among them are:
- - Agentic CLI (command line interface) tools (Claude Code, Codex CLI)
- - Agentic IDEs (Cursor, Windsurf)
- - Agentic IDE extensions (Github Copilot, Codex)
- 
-These tools essentially define agent harnesses. The CLIs specifically tend to give us more power and freedom on how to setup these harnesses.
-
-Claude Code is currently one of the clearest real-world implementations of agentic engineering concepts.
-As such, we will focus on it here.
-
-Please note that while Claude Code is focused on software engineering tasks, the same ideas can be used for many other domains.
+Agentic frameworks matter here as concrete harnesses for local tool-using work. The most revealing examples are the terminal-native ones, because they expose the environment, permissions, artifacts, and execution rules directly instead of hiding them behind a UI. Claude Code is the main concrete example in this guide, with Codex CLI as a second example showing that the pattern is not tied to one product.
 
 ## From Frameworks To Environments
 
@@ -283,7 +273,7 @@ This is why terminal-native agents feel different from plain chat. The model is 
 
 ## Core Operating Patterns
 
-Once an agent is grounded in a real environment, its work tends to converge on the same loop: inspect, plan, act, check, iterate. This is not abstract AI theory. It is the practical rhythm of making changes in a repository without losing control.
+Once the environment is in place, the work inside it tends to converge on the same loop: inspect, plan, act, check, iterate. This is not abstract AI theory. It is the practical rhythm of making changes in a repository without losing control.
 
 Inspect means looking at the current state before making assumptions: reading files, searching for handlers, listing directories, checking config, or reviewing prior notes. Plan means turning that inspection into an explicit next-step sequence instead of improvising every move. Act means editing files, running commands, creating artifacts, or invoking other tools. Check means comparing the result against the actual system by running tests, reading errors, or validating the changed files. Iterate means using that feedback to tighten the plan and continue until the task is actually complete.
 
@@ -291,7 +281,7 @@ In real repo work, the loop might look like this: inspect the authentication flo
 
 ## Artifacts As Control Surfaces
 
-The environment becomes much more reliable once execution is shaped by durable artifacts. Plans, task files, summaries, state files, and checklists are not just logs left behind by the work. They are control surfaces that influence what happens next.
+That loop becomes much more reliable once execution is shaped by durable artifacts. Plans, task files, summaries, state files, and checklists are not just logs left behind by the work. They are control surfaces that influence what happens next.
 
 A plan constrains the action space by making intended steps explicit. A task file can scope one unit of work so execution does not drift across unrelated problems. A summary records what changed, what was verified, and what still needs attention, which makes handoff and recovery possible. A state file preserves position across sessions so the agent or operator knows what phase is active and which decisions are already locked. A checklist turns vague completion into visible criteria that can be checked instead of guessed.
 
@@ -299,7 +289,7 @@ These artifacts matter because local-agent work is long-running and interruptibl
 
 ## Skills And Reusable Workflows
 
-Tools expose raw capabilities. Skills package repeatable ways of using those capabilities inside the environment. A skill is not just "the agent knows how to do something." It is a reusable operating pattern with a defined objective, expected inputs, execution steps, and verification behavior. Workflows sit one level above that: they orchestrate multiple steps or multiple skills so the system does not have to improvise the whole path from scratch every time.
+Once artifacts can preserve and transmit intent, the next layer is reuse. Tools expose raw capabilities. Skills package repeatable ways of using those capabilities inside the environment. A skill is not just "the agent knows how to do something." It is a reusable operating pattern with a defined objective, expected inputs, execution steps, and verification behavior. Workflows sit one level above that: they orchestrate multiple steps or multiple skills so the system does not have to improvise the whole path from scratch every time.
 
 This matters because terminal-native agent work quickly becomes too large for pure on-the-fly reasoning. Reusable workflows reduce drift, make expected outputs explicit, and preserve successful execution patterns across tasks. Instead of rediscovering how to map a codebase, add a phase, or verify a change each time, the system can invoke a packaged routine that already knows which artifacts to read, which checks to run, and which outputs to produce.
 
@@ -309,7 +299,7 @@ Once skills, artifacts, and execution checks become reusable, a higher-level wor
 
 ## Delegation And Parallel Subagents
 
-Delegation is not magic autonomy. It is the deliberate act of carving a larger objective into smaller scoped units of work and assigning those units bounded context, expected outputs, and a verification path. In a terminal-native environment, that usually means giving a subagent a narrow task, the specific files or artifacts it should read, the constraints it must respect, and the form of the result it should return.
+Once workflows are explicit, delegation becomes practical rather than mystical. It is the deliberate act of carving a larger objective into smaller scoped units of work and assigning those units bounded context, expected outputs, and a verification path. In a terminal-native environment, that usually means giving a subagent a narrow task, the specific files or artifacts it should read, the constraints it must respect, and the form of the result it should return.
 
 Good delegation depends on artifact-backed decomposition. A parent agent can create a task file, pass along the current plan, point to the relevant state file, and require a summary on completion. Those artifacts keep the delegated work aligned with the main objective and make the result reviewable when control returns. Without them, sub-work becomes opaque and parallel execution turns into guesswork.
 
@@ -317,7 +307,7 @@ Parallel subagents matter because many repo tasks separate cleanly: one agent ca
 
 ## Verification, Recovery, And Failure Modes
 
-Reliable local-agent systems do not treat verification as cleanup after the interesting work is done. Checking the result is part of the operating environment itself. If an agent can read files, run commands, and change a repository, it also needs explicit ways to test those changes, compare outputs against expectations, surface failures, and decide what happens next.
+Delegation only scales if the system can tell the difference between progress and damage. Reliable local-agent systems do not treat verification as cleanup after the interesting work is done. Checking the result is part of the operating environment itself. If an agent can read files, run commands, and change a repository, it also needs explicit ways to test those changes, compare outputs against expectations, surface failures, and decide what happens next.
 
 That is why verification, retries, rollback, and bounded recovery belong in the same mental model as tools and artifacts. A good environment exposes the checks that matter: run the targeted test suite, inspect the diff, confirm the protected boundary still holds, compare generated files against a contract, or require a review step before continuing. When a check fails, the system should not hide that failure behind confident prose. It should make the failure visible, preserve the evidence, and constrain the next action.
 
