@@ -342,3 +342,61 @@ From there, `gsd-discuss-phase` narrows a phase to a clear objective and boundar
 Once the phase is defined, `gsd-execute-phase` carries the work through implementation with the plan, task boundaries, and verification hooks already attached. `gsd-add-tests` extends that execution path by making missing coverage explicit rather than leaving correctness to a final hopeful check.
 
 After implementation, `gsd-verify-work` closes the loop at the user-facing level by checking whether the built result actually behaves as intended, while `gsd-validate-phase` audits whether the phase met its own structural and verification contract. A continuity skill such as `gsd-pause-work` or `gsd-complete-milestone` then makes workflow control explicit again by either preserving resumable state or formally closing the current slice of work.
+
+### Full GSD Skill Reference
+
+The walkthrough shows the main lifecycle path. The broader framework exposes a larger skill surface around that path so setup, planning, execution, validation, continuity, and maintenance remain explicit parts of the operating model.
+
+#### Project Setup And Configuration
+
+- `gsd-new-project`: Initialize a new project with deep context gathering and `PROJECT.md`.
+- `gsd-new-milestone`: Start a new milestone cycle, update `PROJECT.md`, and route to requirements.
+- `gsd-settings`: Configure GSD workflow toggles and model profile.
+- `gsd-set-profile`: Switch model profile for GSD agents.
+- `gsd-help`: Show available GSD commands and usage guide.
+- `gsd-update`: Update GSD to the latest version with changelog display.
+- `gsd-health`: Diagnose planning-directory health and optionally repair issues.
+
+#### Discovery And Planning
+
+- `gsd-progress`: Check project progress, show context, and route to the next action.
+- `gsd-map-codebase`: Analyze a codebase with parallel mapper agents to produce `.planning/codebase/` documents.
+- `gsd-discuss-phase`: Gather phase context through adaptive questioning before planning.
+- `gsd-list-phase-assumptions`: Surface assumptions about a phase approach before planning.
+- `gsd-research-phase`: Research how to implement a phase as a standalone discovery step.
+- `gsd-plan-phase`: Create a detailed phase plan with a verification loop.
+- `gsd-ui-phase`: Generate a UI design contract (`UI-SPEC.md`) for frontend phases.
+- `gsd-plan-milestone-gaps`: Create phases that close gaps found in milestone auditing.
+
+#### Execution And Debugging
+
+- `gsd-execute-phase`: Execute all plans in a phase with wave-based parallelization.
+- `gsd-quick`: Execute a quick task with GSD guarantees while skipping optional agents.
+- `gsd-debug`: Run a systematic debugging flow with persistent state across context resets.
+- `gsd-autonomous`: Run all remaining phases autonomously through discuss, plan, and execute.
+- `gsd-add-tests`: Generate tests for a completed phase from UAT criteria and implementation.
+- `gsd-reapply-patches`: Reapply local modifications after a GSD update.
+
+#### Validation And Review
+
+- `gsd-verify-work`: Validate built features through conversational UAT.
+- `gsd-validate-phase`: Retroactively audit and fill Nyquist validation gaps for a completed phase.
+- `gsd-ui-review`: Run a retroactive six-pillar visual audit of implemented frontend code.
+- `gsd-audit-milestone`: Audit milestone completion against original intent before archiving.
+
+#### Roadmap And Milestone Maintenance
+
+- `gsd-add-phase`: Add a phase to the end of the current milestone in the roadmap.
+- `gsd-insert-phase`: Insert urgent work as a decimal phase between existing phases.
+- `gsd-remove-phase`: Remove a future phase from the roadmap and renumber later phases.
+- `gsd-complete-milestone`: Archive a completed milestone and prepare for the next version.
+- `gsd-cleanup`: Archive accumulated phase directories from completed milestones.
+
+#### Continuity And Utilities
+
+- `gsd-pause-work`: Create a context handoff when pausing work mid-phase.
+- `gsd-resume-work`: Resume work from a previous session with full context restoration.
+- `gsd-add-todo`: Capture an idea or task as a todo from the current conversation context.
+- `gsd-check-todos`: List pending todos and select one to work on.
+- `gsd-stats`: Display project statistics across phases, plans, requirements, git metrics, and timeline.
+- `gsd-join-discord`: Join the GSD Discord community.
