@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Add The New Core Sections
 current_plan: 2
-status: in_progress
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-20T10:10:32.328Z"
+status: verifying
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-20T10:15:54.664Z"
 last_activity: 2026-03-20
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 **Total Phases:** 4
 **Current Plan:** 2
 **Total Plans in Phase:** 2
-**Status:** Plan 1 complete — continuing Phase 2
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-03-20
 
-**Progress:** [████████░░] 75%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -45,6 +45,7 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 | Phase 01 P01 | 3 min | 2 tasks | 3 files |
 | Phase 01-frame-the-guide P02 | 2 min | 2 tasks | 5 files |
 | Phase 02-add-the-new-core-sections P01 | 12 min | 2 tasks | 1 file |
+| Phase 02-add-the-new-core-sections P02 | 4 min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -56,6 +57,8 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 - [Roadmap]: Add Phase 02.1 for GSD so the guide can cover it as a concrete workflow-framework example and skill reference after the generic core sections.
 - [Phase 02-add-the-new-core-sections]: Replace the numbered Claude-Code-led draft after the Phase 1 transitions with five H2 sections centered on environment, loops, artifacts, workflows, and delegation.
 - [Phase 02-add-the-new-core-sections]: Keep Claude Code as a concentrated concrete example while using Codex CLI only as confirming evidence that the pattern generalizes.
+- [Phase 02-add-the-new-core-sections]: Treat verification, retries, rollback, and bounded recovery as explicit parts of the local-agent operating environment rather than post-hoc cleanup.
+- [Phase 02-add-the-new-core-sections]: Replace the leftover product-led framework opener with a pattern-first transition so the post-framework body reads as one argument from environment through design.
 
 ### Roadmap Evolution
 - Phase 02.1 inserted after Phase 2: Add GSD framework example and skill reference (URGENT)
@@ -68,6 +71,6 @@ None yet.
 
 ## Session Continuity
 
-**Last session:** 2026-03-20T10:10:32.250Z
-**Stopped At:** Completed 02-01-PLAN.md
+**Last session:** 2026-03-20T10:15:54.660Z
+**Stopped At:** Completed 02-02-PLAN.md
 **Resume File:** None
