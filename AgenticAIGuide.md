@@ -296,3 +296,21 @@ The environment becomes much more reliable once execution is shaped by durable a
 A plan constrains the action space by making intended steps explicit. A task file can scope one unit of work so execution does not drift across unrelated problems. A summary records what changed, what was verified, and what still needs attention, which makes handoff and recovery possible. A state file preserves position across sessions so the agent or operator knows what phase is active and which decisions are already locked. A checklist turns vague completion into visible criteria that can be checked instead of guessed.
 
 These artifacts matter because local-agent work is long-running and interruptible. The system needs ways to preserve intent outside the model's short-term context window. When Claude Code writes a plan before editing or leaves a summary after execution, the artifact is doing real coordination work. When a Codex CLI workflow reads a state file before continuing, the same pattern appears again. The artifact is not incidental output. It is part of the control system that keeps execution legible, resumable, and bounded.
+
+## Skills And Reusable Workflows
+
+Tools expose raw capabilities. Skills package repeatable ways of using those capabilities inside the environment. A skill is not just "the agent knows how to do something." It is a reusable operating pattern with a defined objective, expected inputs, execution steps, and verification behavior. Workflows sit one level above that: they orchestrate multiple steps or multiple skills so the system does not have to improvise the whole path from scratch every time.
+
+This matters because terminal-native agent work quickly becomes too large for pure on-the-fly reasoning. Reusable workflows reduce drift, make expected outputs explicit, and preserve successful execution patterns across tasks. Instead of rediscovering how to map a codebase, add a phase, or verify a change each time, the system can invoke a packaged routine that already knows which artifacts to read, which checks to run, and which outputs to produce.
+
+Claude Code makes the pattern easy to see when it follows a structured repo task: inspect the codebase, write a plan, execute scoped changes, run verification, and record what happened. The important insight is not the product feature list. It is that the work becomes more reliable when those steps are treated as a reusable workflow rather than a fresh improvisation. Codex CLI shows the same general idea when operators layer repeatable scripts, prompts, or repo conventions on top of the base tool contract.
+
+Once skills, artifacts, and execution checks become reusable, a higher-level workflow framework becomes the natural next layer. That later layer is not the subject here, but it depends on these primitives being explicit first.
+
+## Delegation And Parallel Subagents
+
+Delegation is not magic autonomy. It is the deliberate act of carving a larger objective into smaller scoped units of work and assigning those units bounded context, expected outputs, and a verification path. In a terminal-native environment, that usually means giving a subagent a narrow task, the specific files or artifacts it should read, the constraints it must respect, and the form of the result it should return.
+
+Good delegation depends on artifact-backed decomposition. A parent agent can create a task file, pass along the current plan, point to the relevant state file, and require a summary on completion. Those artifacts keep the delegated work aligned with the main objective and make the result reviewable when control returns. Without them, sub-work becomes opaque and parallel execution turns into guesswork.
+
+Parallel subagents matter because many repo tasks separate cleanly: one agent can inspect tests while another reviews implementation details, or one can draft a migration note while another verifies the changed commands. The gain does not come from spawning more reasoning at random. It comes from choosing explicit boundaries, keeping each subagent's context narrow, and using summaries and checklists to merge the work safely. Delegation, in other words, is an orchestration choice built on top of environment access, reusable workflows, and durable control surfaces.
