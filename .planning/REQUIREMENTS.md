@@ -19,11 +19,11 @@
 
 ### Guide Structure
 
-- [ ] **STRU-01**: Guide includes a section on terminal-native agent environments.
-- [ ] **STRU-02**: Guide includes a section on core operating patterns.
-- [ ] **STRU-03**: Guide includes a section on artifacts as control surfaces.
-- [ ] **STRU-04**: Guide includes a section on skills and reusable workflows.
-- [ ] **STRU-05**: Guide includes a section on delegation and parallel subagents.
+- [x] **STRU-01**: Guide includes a section on terminal-native agent environments.
+- [x] **STRU-02**: Guide includes a section on core operating patterns.
+- [x] **STRU-03**: Guide includes a section on artifacts as control surfaces.
+- [x] **STRU-04**: Guide includes a section on skills and reusable workflows.
+- [x] **STRU-05**: Guide includes a section on delegation and parallel subagents.
 - [ ] **STRU-06**: Guide includes a section on verification, recovery, and failure modes.
 - [ ] **STRU-07**: Guide includes a section on how to design with these patterns.
 
@@ -73,11 +73,11 @@
 | SCOPE-04 | Phase 1 | Complete |
 | PRES-01 | Phase 1 | Complete |
 | PRES-02 | Phase 1 | Complete |
-| STRU-01 | Phase 2 | Pending |
-| STRU-02 | Phase 2 | Pending |
-| STRU-03 | Phase 2 | Pending |
-| STRU-04 | Phase 2 | Pending |
-| STRU-05 | Phase 2 | Pending |
+| STRU-01 | Phase 2 | Complete |
+| STRU-02 | Phase 2 | Complete |
+| STRU-03 | Phase 2 | Complete |
+| STRU-04 | Phase 2 | Complete |
+| STRU-05 | Phase 2 | Complete |
 | STRU-06 | Phase 2 | Pending |
 | STRU-07 | Phase 2 | Pending |
 | GSD-01 | Phase 02.1 | Pending |
@@ -98,4 +98,4 @@
 
 ---
 *Requirements defined: 2026-03-19*
-*Last updated: 2026-03-19 after initialization*
+*Last updated: 2026-03-20 after completing 02-01-PLAN.md*

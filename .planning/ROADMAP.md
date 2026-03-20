@@ -50,10 +50,10 @@ Plans:
 
 **Goal:** Add the missing conceptual body of the guide after the existing draft material.
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] `02-01-PLAN.md` — Rewrite the post-framework body from environments through reusable workflows and delegation
+- [x] `02-01-PLAN.md` — Rewrite the post-framework body from environments through reusable workflows and delegation
 - [ ] `02-02-PLAN.md` — Finish the failure-handling and design sections, then tighten the full rewritten body
 
 **Requirements:**
@@ -122,7 +122,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Frame The Guide | 2/2 | Complete | 2026-03-19 |
-| 2. Add The New Core Sections | 0/0 | Not started | - |
+| 2. Add The New Core Sections | 1/2 | In Progress | - |
 | 02.1. Add GSD Framework Example And Skill Reference | 0/0 | Not started | - |
 | 3. Tighten And Verify | 0/0 | Not started | - |
 
