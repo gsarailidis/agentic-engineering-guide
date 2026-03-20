@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: "02.1"
+current_phase: 02.1
 current_phase_name: Add GSD Framework Example And Skill Reference
 current_plan: 2
-status: in_progress
-stopped_at: Completed 02.1-01-PLAN.md
-last_updated: "2026-03-20T13:57:05.716Z"
+status: verifying
+stopped_at: Completed 02.1-02-PLAN.md
+last_updated: "2026-03-20T14:03:16.715Z"
 last_activity: 2026-03-20
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 6
-  completed_plans: 5
-  percent: 83
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 **Total Phases:** 4
 **Current Plan:** 2
 **Total Plans in Phase:** 2
-**Status:** Plan 1 complete — ready for `02.1-02`
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-03-20
 
-**Progress:** [████████░░] 83%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -47,6 +47,7 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 | Phase 02-add-the-new-core-sections P01 | 12 min | 2 tasks | 1 file |
 | Phase 02-add-the-new-core-sections P02 | 4 min | 2 tasks | 1 files |
 | Phase 02.1-add-gsd-framework-example-and-skill-reference P01 | 1 min | 2 tasks | 1 files |
+| Phase 02.1-add-gsd-framework-example-and-skill-reference P02 | 1 min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,8 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 - [Phase 02-add-the-new-core-sections]: Replace the leftover product-led framework opener with a pattern-first transition so the post-framework body reads as one argument from environment through design.
 - [Phase 02.1-add-gsd-framework-example-and-skill-reference]: Frame GSD as a workflow layer above the local tool-using environment rather than as a new kind of agent system.
 - [Phase 02.1-add-gsd-framework-example-and-skill-reference]: Explain the core GSD skills as one lifecycle narrative so planning, execution, validation, and continuity stay explicit without turning the guide into operator documentation.
+- [Phase 02.1-add-gsd-framework-example-and-skill-reference]: Group the GSD skill reference by workflow function rather than alphabetically so the framework surfaces remain visible.
+- [Phase 02.1-add-gsd-framework-example-and-skill-reference]: Keep the skill reference inside the same GSD section and tie it back to the lifecycle walkthrough so it reads as part of the guide body rather than an appendix.
 
 ### Roadmap Evolution
 - Phase 02.1 inserted after Phase 2: Add GSD framework example and skill reference (URGENT)
@@ -74,6 +77,6 @@ None yet.
 
 ## Session Continuity
 
-**Last session:** 2026-03-20T13:57:05.662Z
-**Stopped At:** Completed 02.1-01-PLAN.md
+**Last session:** 2026-03-20T14:02:56.891Z
+**Stopped At:** Completed 02.1-02-PLAN.md
 **Resume File:** None

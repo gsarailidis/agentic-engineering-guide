@@ -81,11 +81,11 @@ Plans:
 - GSD-03
 
 **Depends on:** Phase 2
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] `02.1-01-PLAN.md` — Add the dedicated GSD section framing and short lifecycle walkthrough
-- [ ] `02.1-02-PLAN.md` — Add the full categorized skill reference and tighten the integrated section
+- [x] `02.1-02-PLAN.md` — Add the full categorized skill reference and tighten the integrated section
 
 **Success criteria:**
 1. The guide explains what GSD is in relation to a local tool-using agent environment.
@@ -124,8 +124,8 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Frame The Guide | 2/2 | Complete | 2026-03-19 |
 | 2. Add The New Core Sections | 2/2 | Complete | 2026-03-20 |
-| 02.1. Add GSD Framework Example And Skill Reference | 1/2 | In Progress | - |
+| 02.1. Add GSD Framework Example And Skill Reference | 2/2 | Complete | 2026-03-20 |
 | 3. Tighten And Verify | 0/0 | Not started | - |
 
 ---
-*Last updated: 2026-03-20 after completing 02.1-01-PLAN.md*
+*Last updated: 2026-03-20 after completing 02.1-02-PLAN.md*
