@@ -329,9 +329,9 @@ Once that vocabulary is clear, higher-level workflow frameworks become easier to
 
 GSD (Get Shit Done) is a workflow framework layered on top of a local tool-using agent environment. It does not replace the environment-level contract described above. It assumes that contract already exists: the agent can read and write artifacts, run bounded commands, reuse higher-level workflows, delegate scoped work, and verify outcomes against the actual workspace.
 
-What GSD adds is a stronger operating structure around those local-agent primitives. Instead of treating planning, execution, validation, and workflow control as habits the operator must recreate every time, it turns them into explicit artifacts and reusable skills. Phase files, state files, summaries, requirement maps, and execution workflows become part of the control surface, not just notes left behind after the fact.
+What GSD adds is operating structure. Instead of treating planning, execution, validation, and workflow control as habits the operator must recreate every time, it turns them into explicit artifacts and reusable skills. Phase files, state files, summaries, requirement maps, and execution workflows become part of the control surface rather than notes left behind after the fact.
 
-That is the important layer boundary. Claude Code or Codex CLI gives the agent an environment in which work can happen; GSD sits above that layer and organizes how work moves from discovery into planning, execution, verification, and maintenance. In other words, it is a concrete example of what happens when the patterns from Phase 2 are packaged into a repeatable workflow system.
+That is the important layer boundary. Claude Code or Codex CLI gives the agent an environment in which work can happen; GSD sits above that layer and organizes how work moves from discovery into planning, execution, verification, and maintenance. It is a concrete example of what Phase 2's patterns look like once they are packaged into a repeatable workflow system.
 
 ### A Short GSD Lifecycle Walkthrough
 
@@ -345,7 +345,7 @@ After implementation, `gsd-verify-work` closes the loop at the user-facing level
 
 ### Full GSD Skill Reference
 
-The walkthrough shows the main lifecycle path. The broader framework exposes a larger skill surface around that path so setup, planning, execution, validation, continuity, and maintenance remain explicit parts of the operating model.
+The walkthrough shows the main lifecycle path. The reference below stays in the same section because the larger skill surface is still part of the same operating model: setup, planning, execution, validation, continuity, and maintenance made explicit as reusable workflow surfaces.
 
 #### Project Setup And Configuration
 
