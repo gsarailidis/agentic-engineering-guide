@@ -6,11 +6,11 @@
 
 ## Overview
 
-This roadmap is structured to preserve the approved early draft, define the guide's framing precisely, add the missing local-agent sections after `# Agentic Frameworks`, and then tighten the result for clarity and scope discipline.
+This roadmap is structured to preserve the approved early draft, define the guide's framing precisely, add the missing local-agent sections after `# Agentic Frameworks`, add a focused GSD framework reference phase, and then tighten the result for clarity and scope discipline.
 
-**Total phases:** 3  
-**v1 requirements:** 20  
-**Coverage:** 20/20 mapped
+**Total phases:** 4  
+**v1 requirements:** 23  
+**Coverage:** 23/23 mapped
 
 ## Phases
 
@@ -18,6 +18,7 @@ This roadmap is structured to preserve the approved early draft, define the guid
 |-------|------|------|--------------|
 | 1 | Frame The Guide | Lock the guide's scope, examples, preservation rules, and editorial boundaries | SCOPE-01, SCOPE-02, SCOPE-03, SCOPE-04, PRES-01, PRES-02 |
 | 2 | Add The New Core Sections | Write the agreed post-framework sections focused on local tool-using agent patterns | STRU-01, STRU-02, STRU-03, STRU-04, STRU-05, STRU-06, STRU-07 |
+| 02.1 | Add GSD Framework Example And Skill Reference | Add GSD as a concrete workflow-framework example and include its categorized skill reference | GSD-01, GSD-02, GSD-03 |
 | 3 | Tighten And Verify | Make the guide clear, compact, newcomer-friendly, and within scope | OUTC-01, OUTC-02, OUTC-03, OUTC-04, EDIT-01, EDIT-02, EDIT-03 |
 
 ## Phase Details
@@ -64,6 +65,26 @@ Plans:
 3. Filesystem access, shell access, artifacts, skills, delegation, and verification are the organizing ideas.
 4. The new material integrates cleanly with the existing draft without rewriting the protected earlier sections.
 
+### Phase 02.1: Add GSD framework example and skill reference (INSERTED)
+
+**Goal:** Add GSD as a concrete workflow-framework example and include the requested categorized skill reference without derailing the guide's broader scope.
+
+**Requirements:**
+- GSD-01
+- GSD-02
+- GSD-03
+
+**Depends on:** Phase 2
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 02.1 to break down)
+
+**Success criteria:**
+1. The guide explains what GSD is in relation to a local tool-using agent environment.
+2. The guide includes the requested skill list grouped by function with short descriptions.
+3. The GSD material reads as a concrete worked framework example rather than replacing the broader guide focus.
+
 ### Phase 3: Tighten And Verify
 
 **Goal:** Ensure the result is concise, technical, and useful to newcomers.
@@ -87,6 +108,7 @@ Plans:
 
 - Phase 1 is planning-complete based on current discussion.
 - Phase 2 is the main writing phase.
+- Phase 02.1 adds the GSD case-study/reference layer after the generic patterns are in place.
 - Phase 3 is an editorial and verification pass, not a broad expansion phase.
 
 ## Progress
@@ -95,6 +117,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Frame The Guide | 2/2 | Complete | 2026-03-19 |
 | 2. Add The New Core Sections | 0/0 | Not started | - |
+| 02.1. Add GSD Framework Example And Skill Reference | 0/0 | Not started | - |
 | 3. Tighten And Verify | 0/0 | Not started | - |
 
 ---

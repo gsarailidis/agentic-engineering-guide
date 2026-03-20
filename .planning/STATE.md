@@ -10,7 +10,7 @@ stopped_at: Completed 01-02-PLAN.md
 last_updated: "2026-03-19T18:23:59.420Z"
 last_activity: 2026-03-19
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 1
   total_plans: 2
   completed_plans: 2
@@ -52,6 +52,10 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 - [Phase 01]: Use snapshot line count plus diff-based verification in a POSIX shell script before later guide edits.
 - [Phase 01-frame-the-guide]: Corrected the protected boundary to end before `# Agentic Frameworks`, allowing the framing handoff to live inside the frameworks portion of the guide.
 - [Phase 01-frame-the-guide]: Locked Claude Code as the deeper concrete example while keeping Codex CLI as a confirming pattern example.
+- [Roadmap]: Add Phase 02.1 for GSD so the guide can cover it as a concrete workflow-framework example and skill reference after the generic core sections.
+
+### Roadmap Evolution
+- Phase 02.1 inserted after Phase 2: Add GSD framework example and skill reference (URGENT)
 
 ### Pending Todos
 None yet.

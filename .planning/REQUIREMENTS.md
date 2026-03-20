@@ -27,6 +27,12 @@
 - [ ] **STRU-06**: Guide includes a section on verification, recovery, and failure modes.
 - [ ] **STRU-07**: Guide includes a section on how to design with these patterns.
 
+### Concrete Framework Example
+
+- [ ] **GSD-01**: Guide describes GSD (Get Shit Done) as a concrete workflow framework built on top of a local tool-using agent environment.
+- [ ] **GSD-02**: Guide includes a categorized reference list of the GSD skills named by the user, with short descriptions.
+- [ ] **GSD-03**: Guide explains how GSD makes planning, execution, validation, workflow control, and maintenance explicit without turning the document into product documentation.
+
 ### Reader Outcome
 
 - [ ] **OUTC-01**: Reader can explain what distinguishes a local tool-using agent environment from plain chat interaction.
@@ -74,6 +80,9 @@
 | STRU-05 | Phase 2 | Pending |
 | STRU-06 | Phase 2 | Pending |
 | STRU-07 | Phase 2 | Pending |
+| GSD-01 | Phase 02.1 | Pending |
+| GSD-02 | Phase 02.1 | Pending |
+| GSD-03 | Phase 02.1 | Pending |
 | OUTC-01 | Phase 3 | Pending |
 | OUTC-02 | Phase 3 | Pending |
 | OUTC-03 | Phase 3 | Pending |
@@ -83,8 +92,8 @@
 | EDIT-03 | Phase 3 | Pending |
 
 **Coverage:**
-- v1 requirements: 20 total
-- Mapped to phases: 20
+- v1 requirements: 23 total
+- Mapped to phases: 23
 - Unmapped: 0
 
 ---
