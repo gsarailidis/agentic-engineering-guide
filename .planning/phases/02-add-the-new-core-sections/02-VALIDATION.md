@@ -19,7 +19,7 @@ created: 2026-03-20
 |----------|-------|
 | **Framework** | shell checks (`rg`, `sed`, protected-boundary verifier) |
 | **Config file** | none |
-| **Quick run command** | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$" AgenticAIGuide.md` |
+| **Quick run command** | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$" AgenticAIGuide.md` |
 | **Full suite command** | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$|Claude Code|Codex CLI|artifact|workflow|delegat|recover|failure" AgenticAIGuide.md` |
 | **Estimated runtime** | ~5 seconds |
 
@@ -27,8 +27,9 @@ created: 2026-03-20
 
 ## Sampling Rate
 
-- **After every task commit:** Run `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$" AgenticAIGuide.md`
-- **After every plan wave:** Run `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$|Claude Code|Codex CLI|artifact|workflow|delegat|recover|failure" AgenticAIGuide.md`
+- **After every task commit:** Run the task's mapped automated command from the table below.
+- **After Wave 1:** Run `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$" AgenticAIGuide.md`
+- **After Wave 2:** Run `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$|Claude Code|Codex CLI|artifact|workflow|delegat|recover|failure" AgenticAIGuide.md`
 - **Before `$gsd-verify-work`:** Full suite must be green
 - **Max feedback latency:** 5 seconds
 
@@ -41,6 +42,7 @@ created: 2026-03-20
 | 02-01-01 | 01 | 1 | STRU-01, STRU-02, STRU-03 | smoke | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$" AgenticAIGuide.md` | ✅ | ⬜ pending |
 | 02-01-02 | 01 | 1 | STRU-04, STRU-05 | smoke | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|skill|workflow|delegate|subagent|parallel" AgenticAIGuide.md` | ✅ | ⬜ pending |
 | 02-02-01 | 02 | 2 | STRU-06, STRU-07 | smoke | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$|verify|recovery|failure|retry|rollback|design" AgenticAIGuide.md` | ✅ | ⬜ pending |
+| 02-02-02 | 02 | 2 | STRU-01..STRU-07 | smoke | `.planning/phases/01-frame-the-guide/verify-protected-boundary.sh && rg -n "^## Terminal-Native Agent Environments$|^## Core Operating Patterns$|^## Artifacts As Control Surfaces$|^## Skills And Reusable Workflows$|^## Delegation And Parallel Subagents$|^## Verification, Recovery, And Failure Modes$|^## Designing With These Patterns$|Claude Code|Codex CLI|artifact|workflow|delegat|recover|failure" AgenticAIGuide.md` | ✅ | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
