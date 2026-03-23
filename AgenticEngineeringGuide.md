@@ -1,0 +1,760 @@
+## Contents
+
+  - [Introduction](#introduction)
+- [I. Agentic AI (the behavior)](#i-agentic-ai-the-behavior)
+- [II. Agentic Engineering (the discipline)](#ii-agentic-engineering-the-discipline)
+  - [1. Control of the loop](#1-control-of-the-loop)
+  - [2. Reliability](#2-reliability)
+  - [3. Observability](#3-observability)
+  - [4. Evaluation](#4-evaluation)
+  - [5. Cost control](#5-cost-control)
+  - [6. Architecture](#6-architecture)
+- [III. Definitions](#iii-definitions)
+  - [Agent](#agent)
+  - [Agent harness](#agent-harness)
+  - [Tools](#tools)
+  - [Skills](#skills)
+    - [Example skill: `gsd-map-codebase`](#example-skill-gsd-map-codebase)
+  - [Memory](#memory)
+    - [Short-term memory](#short-term-memory)
+    - [Long-term memory](#long-term-memory)
+- [IV. Agentic Frameworks](#iv-agentic-frameworks)
+  - [Terminal-Native Agent Environments](#terminal-native-agent-environments)
+  - [The Core Operating Loop](#the-core-operating-loop)
+  - [Artifacts As Control Surfaces](#artifacts-as-control-surfaces)
+  - [Skills And Reusable Workflows](#skills-and-reusable-workflows)
+  - [Delegation And Parallel Work](#delegation-and-parallel-work)
+  - [Verification, Recovery, And Failure Modes](#verification-recovery-and-failure-modes)
+  - [Design Implication](#design-implication)
+- [V. Claude Code](#v-claude-code)
+  - [Why Claude Code Is A Good Reference Example](#why-claude-code-is-a-good-reference-example)
+  - [The Basic Execution Model](#the-basic-execution-model)
+  - [Filesystem Access](#filesystem-access)
+  - [Shell Access](#shell-access)
+  - [Structured Tools](#structured-tools)
+  - [Permissions And Approval Boundaries](#permissions-and-approval-boundaries)
+  - [Artifacts And Continuity](#artifacts-and-continuity)
+  - [Delegation And Subagents](#delegation-and-subagents)
+  - [The Real Working Rhythm](#the-real-working-rhythm)
+  - [Why Claude Code Feels Different From Chat](#why-claude-code-feels-different-from-chat)
+  - [Common Failure Modes](#common-failure-modes)
+  - [What Claude Code Teaches](#what-claude-code-teaches)
+- [VI. Problem Framing, Research, And Spec-Driven Engineering](#vi-problem-framing-research-and-spec-driven-engineering)
+  - [Why This Layer Comes Next](#why-this-layer-comes-next)
+  - [What Phase 03.2 Will Add](#what-phase-032-will-add)
+- [VII. GSD As A Workflow Framework](#vii-gsd-as-a-workflow-framework)
+  - [What GSD Adds](#what-gsd-adds)
+  - [The Core GSD Lifecycle](#the-core-gsd-lifecycle)
+  - [Why GSD Matters](#why-gsd-matters)
+  - [Full GSD Skill Reference](#full-gsd-skill-reference)
+    - [Project Setup And Configuration](#project-setup-and-configuration)
+    - [Discovery And Planning](#discovery-and-planning)
+    - [Execution And Debugging](#execution-and-debugging)
+    - [Validation And Review](#validation-and-review)
+    - [Roadmap And Milestone Maintenance](#roadmap-and-milestone-maintenance)
+    - [Continuity And Utilities](#continuity-and-utilities)
+
+## Introduction
+
+This guide is about agentic engineering in local, tool-using environments.
+
+More specifically, it is about development-time terminal-native agent work: systems where a model is not only generating text, but is operating inside a real workspace with files, commands, tools, permissions, and durable artifacts.
+
+That is not the same thing as a production-system agent embedded in a shipped product or backend service. Those systems have related concerns, but this guide is centered on the local working environment that lets an agent inspect, change, verify, and hand off real project state.
+
+What the guide covers:
+
+- the minimal concepts needed to talk clearly about agentic behavior and agentic engineering
+- the vocabulary that the rest of the guide reuses
+- the structure of terminal-native agent environments
+- Claude Code as a detailed concrete harness example
+- the workflow-design layer that sits above the harness
+- GSD as a workflow framework built on top of that kind of environment
+
+What level of depth to expect:
+
+- the introduction sets the subject, scope, and reading path
+- sections `I-III` are minimal prerequisites, not a full survey
+- the framework section explains the environment-level operating patterns in moderate depth
+- the Claude Code section is intentionally more detailed and concrete
+- the workflow-design section is a reserved bridge for the next phase, not a full chapter yet
+- the GSD section explains structure, lifecycle, and skill surface, but stops short of becoming operator documentation
+
+The intended path is: orient the reader, establish the minimal concepts, explain the environment patterns, make them concrete through one harness example, then move up to workflow design and finally to one explicit workflow framework.
+
+The goal is to give a clear mental model of the space and its moving parts. It is not a prompt cookbook, a product manual, or a broad survey of every agent framework.
+
+# I. Agentic AI (the behavior)
+
+Agentic AI refers to **AI systems that act toward goals through multi-step reasoning and tool use**.
+
+This section stays narrow on purpose. It defines the minimal behavioral pattern that the rest of the guide will engineer around.
+
+Core properties:
+
+1. **Goal-directed behavior**
+   The system is given an objective, not just a prompt.
+
+2. **Iterative decision-making**
+   Most systems repeat some version of perceive -> plan -> act -> evaluate.
+
+3. **Tool use**
+   APIs, databases, search, code execution, browsers, shells.
+
+4. **State persistence**
+   Memory, context tracking, or environment state.
+
+5. **Autonomy**
+   The system decides what to do next instead of following a fixed script.
+
+Those properties describe the behavior. The next question is what it takes to make that behavior controllable inside a real working environment.
+
+---
+
+# II. Agentic Engineering (the discipline)
+
+Agentic engineering is the **software engineering discipline required to make agentic systems useful, controllable, and reliable**.
+
+In this guide, that discipline matters because the system is not acting in the abstract. It is operating through explicit loops, tools, permissions, and checks in a real workspace.
+
+It therefore deals with:
+
+## 1. Control of the loop
+
+- planning structure
+- stopping conditions
+- retry logic
+- tool routing
+- guardrails
+
+## 2. Reliability
+
+- hallucinated tool calls
+- runaway loops
+- brittle plans
+- context explosion
+- tool misuse
+
+## 3. Observability
+
+- traces
+- tool decisions
+- intermediate outputs
+- failures
+
+## 4. Evaluation
+
+- step correctness
+- task completion
+- cost vs performance
+- trajectory quality
+
+## 5. Cost control
+
+- model routing
+- caching
+- pruning
+- bounded depth
+
+## 6. Architecture
+
+- memory
+- tools
+- planners
+- evaluators
+- policies
+- orchestration
+
+Without explicit engineering, the system collapses into prompt spaghetti.
+
+These concerns are the bridge into the rest of the guide. The following sections define the terms, then show how those concerns become visible in an actual local-agent environment.
+
+---
+
+# III. Definitions
+
+## Agent
+
+An **agent** is a system that:
+
+1. receives a goal
+2. decides actions
+3. executes them through tools
+4. observes results
+5. repeats until completion
+
+Agents operate through loops.
+
+---
+
+## Agent harness
+
+The **agent harness** is the execution environment that runs the agent loop.
+
+It manages:
+
+- reasoning flow
+- tool invocation
+- state
+- memory
+- stopping conditions
+- safety rules
+
+The harness is the control system around the model.
+
+Examples:
+
+- Claude Code runtime
+- LangGraph loops
+- OpenAI agent frameworks
+- custom orchestrators
+
+In the rest of this guide, the harness is the layer that exposes the workspace, tool surface, permissions, and execution rhythm that later sections analyze in more detail.
+
+---
+
+## Tools
+
+**Tools are executable capabilities available to the agent.**
+
+Examples:
+
+- search files
+- edit files
+- run bash commands
+- call APIs
+- query databases
+- run tests
+
+Tools convert the model from a text generator into a system operator.
+
+Tools are usually exposed through structured interfaces.
+
+```json
+{
+  "name": "get_weather",
+  "description": "Get the current weather for a city.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "City name, e.g. Athens"
+      },
+      "unit": {
+        "type": "string",
+        "enum": ["celsius", "fahrenheit"]
+      }
+    },
+    "required": ["city"],
+    "additionalProperties": false
+  }
+}
+```
+
+---
+
+## Skills
+
+**Skills are reusable high-level behaviors.**
+
+Tools expose raw capabilities. Skills package repeatable ways of using them.
+
+A skill usually defines:
+
+- an objective
+- required inputs
+- execution steps
+- expected outputs
+- verification behavior
+
+### Example skill: `gsd-map-codebase`
+
+Objective:
+
+Scan an existing repo and produce a lightweight architectural map under `.planning/codebase/`.
+
+```yaml
+---
+name: "gsd-map-codebase"
+description: "Analyze codebase with parallel mapper agents to produce .planning/codebase/ documents"
+metadata:
+  short-description: "Analyze codebase with parallel mapper agents to produce .planning/codebase/ documents"
+---
+
+Steps:
+
+1. Run the workflow in .codex/get-shit-done/workflows/map-codebase.md
+2. Check for existing .planning/STATE.md and whether .planning/codebase/ already exists
+3. Spawn 4 parallel gsd-codebase-mapper subagents with different lenses
+4. Verify the expected output files exist
+5. Commit the codebase map
+6. Suggest the next workflow step
+```
+
+The point is reuse: the system invokes the skill instead of rebuilding the whole procedure from scratch.
+
+---
+
+## Memory
+
+Agent systems often include persistent memory.
+
+### Short-term memory
+
+Stored in the current context window.
+
+Examples:
+
+- current task
+- recent steps
+- temporary reasoning state
+
+### Long-term memory
+
+Stored outside the current context window.
+
+Examples:
+
+- vector databases
+- knowledge graphs
+- workflow history
+- durable repo artifacts
+
+These definitions are only the shared vocabulary. The next section shifts from terminology to the environment patterns that make local-agent work distinct.
+
+---
+
+# IV. Agentic Frameworks
+
+This guide is about **local tool-using agent environments**.
+
+The important shift is not "the model can call a tool." The important shift is that the model operates inside a real workspace it can inspect and change.
+
+Claude Code and Codex CLI are useful examples because they make this contract visible.
+
+## Terminal-Native Agent Environments
+
+A terminal-native agent environment usually includes:
+
+- a filesystem
+- a shell
+- structured tools
+- permission boundaries
+- durable artifacts
+
+That changes the nature of the work. The system is no longer only generating text about the task. It is operating on the task's actual surfaces.
+
+## The Core Operating Loop
+
+Most real work converges on the same loop:
+
+1. inspect
+2. plan
+3. act
+4. check
+5. iterate
+
+In practice:
+
+- `inspect`: read files, search the repo, review config, inspect current state
+- `plan`: turn findings into explicit next steps
+- `act`: edit files, run commands, call tools, create artifacts
+- `check`: run tests, inspect output, review diffs, validate contracts
+- `iterate`: adjust based on evidence
+
+## Artifacts As Control Surfaces
+
+Artifacts are not just logs. They shape execution.
+
+Common control artifacts:
+
+- `plan`: defines intended steps
+- `task file`: scopes a unit of work
+- `summary`: records what changed and what was verified
+- `state file`: preserves position across sessions
+- `checklist`: turns "done" into explicit criteria
+
+Artifacts matter because local-agent work is long-running and interruptible.
+
+## Skills And Reusable Workflows
+
+Tools expose primitives. Skills and workflows package repeatable operating patterns.
+
+Why this matters:
+
+- less improvisation
+- less drift
+- more predictable outputs
+- easier verification
+
+## Delegation And Parallel Work
+
+Delegation is scoped decomposition.
+
+Good delegated work includes:
+
+- a narrow task
+- exact files or artifacts to read
+- constraints
+- expected output format
+- a verification path
+
+Parallelism helps when boundaries are clean. It hurts when tasks overlap.
+
+## Verification, Recovery, And Failure Modes
+
+Verification is part of execution, not cleanup after it.
+
+Typical checks:
+
+- targeted tests
+- diff inspection
+- boundary checks
+- contract checks
+- review gates
+
+Recovery should be bounded:
+
+- retry only when new evidence changes the plan
+- roll back when the path is clearly wrong
+- record what failed and what was restored
+
+## Design Implication
+
+The main design question is not "which model?" It is "what operating system surrounds the model?"
+
+A strong agent environment gives the model:
+
+- a real workspace
+- explicit loops
+- durable artifacts
+- reusable workflows
+- scoped delegation
+- visible verification
+
+When these are weak, the system becomes opaque. When they are explicit, the system becomes controllable.
+
+---
+
+# V. Claude Code
+
+Claude Code is one of the clearest examples of a terminal-native local-agent harness because it makes the execution contract explicit.
+
+It matters for this guide not as a product review, but as a concrete example of what a serious local-agent environment looks like.
+
+## Why Claude Code Is A Good Reference Example
+
+Claude Code makes five important things visible:
+
+1. the model works inside a real working directory
+2. the model can inspect and modify files
+3. the model can run shell commands
+4. the model is constrained by permissions and approval rules
+5. the model can create durable artifacts that survive the current turn
+
+That combination is what makes the environment interesting.
+
+## The Basic Execution Model
+
+At a high level, Claude Code behaves like this:
+
+1. receive a user goal
+2. inspect the local workspace
+3. form or update a plan
+4. execute bounded actions through tools
+5. check the result against the real system
+6. continue until the task is complete or blocked
+
+This is much closer to supervised systems work than to plain chat.
+
+## Filesystem Access
+
+Filesystem access changes the quality of reasoning because it grounds the model in real project state.
+
+With filesystem access, the system can:
+
+- read source files instead of guessing
+- inspect config instead of inferring it
+- compare versions directly
+- update code and docs in place
+- leave behind plans, summaries, and handoff files
+
+That is why local-agent work can be cumulative. The important state is not only inside the model's context window. It also exists on disk.
+
+## Shell Access
+
+Shell access turns the environment from a read/write document surface into an execution surface.
+
+With shell access, the system can:
+
+- list directories
+- search codebases
+- run tests
+- inspect build failures
+- check git state
+- run project-specific tooling
+
+This matters because the environment can answer the model back. A failing test, a bad exit code, or a compiler error is harder evidence than generated prose.
+
+## Structured Tools
+
+Claude Code is not only "a model with bash." It also exposes structured tools with narrower contracts.
+
+Structured tools matter because they:
+
+- reduce ambiguity
+- constrain inputs
+- constrain outputs
+- make certain actions safer than arbitrary shell usage
+- expose intent more clearly than free-form text
+
+This is a major part of agent engineering: choosing when to rely on open-ended shell power and when to use narrower tool interfaces.
+
+## Permissions And Approval Boundaries
+
+Claude Code makes permission boundaries part of the working model.
+
+In practice that means actions may fall into categories such as:
+
+- allowed automatically
+- allowed only inside a sandbox
+- allowed only with user approval
+- blocked entirely
+
+This is not incidental friction. It is part of the system design.
+
+A capable agent environment should make it clear:
+
+- what the model can do immediately
+- what requires confirmation
+- what cannot be done
+- why the boundary exists
+
+Without this, autonomy becomes unsafe very quickly.
+
+## Artifacts And Continuity
+
+One of the most important properties of Claude Code-style work is that it can accumulate durable artifacts.
+
+Examples:
+
+- a plan file before execution
+- a summary file after execution
+- a state file for resumability
+- a checklist for verification
+- a patch or diff for human review
+
+These artifacts do real coordination work. They preserve intent, support recovery, and make handoff possible.
+
+## Delegation And Subagents
+
+Claude Code-style environments often support explicit delegation.
+
+Delegation works well when the parent agent gives a subagent:
+
+- a narrow objective
+- the exact context it needs
+- a bounded write scope
+- success criteria
+- a return format
+
+This makes parallel work practical. Without those boundaries, delegation becomes noise.
+
+## The Real Working Rhythm
+
+In a strong Claude Code workflow, the model does not jump straight from request to edit.
+
+A more reliable rhythm looks like:
+
+1. inspect first
+2. state assumptions
+3. decide the next bounded action
+4. execute
+5. verify
+6. summarize what changed
+
+This rhythm matters more than any single model feature.
+
+## Why Claude Code Feels Different From Chat
+
+Plain chat is mostly advisory.
+
+Claude Code-style work is operational.
+
+The system is not only describing what should happen. It can:
+
+- inspect the actual repo
+- change the actual repo
+- run the actual commands
+- collect actual failures
+- leave behind actual artifacts
+
+That is the key difference.
+
+## Common Failure Modes
+
+Claude Code does not remove failure. It changes the form of failure.
+
+Common problems:
+
+- acting on incomplete inspection
+- editing too broadly
+- trusting a plan that should be revised
+- hiding failed checks behind confident language
+- delegating overlapping work
+- losing control of scope
+
+This is why the surrounding engineering matters so much.
+
+## What Claude Code Teaches
+
+Claude Code makes the local-agent pattern legible.
+
+It shows that a useful agent harness is not just:
+
+- a model
+- a prompt
+- a tool list
+
+It is a controlled environment with:
+
+- permissions
+- execution rules
+- artifacts
+- verification
+- resumability
+- workflow conventions
+
+That is the larger lesson.
+
+---
+
+# VI. Problem Framing, Research, And Spec-Driven Engineering
+
+The guide needs one more layer before the final GSD example.
+
+Sections `IV` and `V` explain the environment and then one concrete harness. The next layer is the workflow-design question: how good work gets framed, researched, scoped, and turned into explicit specs before execution starts.
+
+## Why This Layer Comes Next
+
+Once an agent can inspect files, run commands, produce artifacts, and verify outcomes, the quality of the work no longer depends only on tool access. It also depends on whether the task was framed correctly, whether the system gathered the right evidence, and whether the execution contract was explicit enough to control scope.
+
+That is why workflow design belongs here rather than being buried inside the final framework example.
+
+## What Phase 03.2 Will Add
+
+Phase `03.2` will fill this section with the substantive material on problem framing, research loops, workflow design, and spec-driven execution.
+
+For Phase `03.1`, this section stays a reserved bridge. Its job is to mark that the guide has to move from harness behavior up to workflow design before it closes with GSD as one concrete framework built on top of that layer.
+
+---
+
+# VII. GSD As A Workflow Framework
+
+GSD is a workflow framework layered on top of the kind of local-agent environment described above.
+
+Layer boundary:
+
+- Claude Code or Codex CLI: provide the environment
+- GSD: provides workflow structure on top of that environment
+
+GSD does not replace the harness. It organizes how work moves through it.
+
+## What GSD Adds
+
+GSD adds explicit workflow structure:
+
+- planning artifacts
+- state tracking
+- requirement mapping
+- execution workflows
+- validation workflows
+- continuity workflows
+
+Instead of relying on operator memory, it turns workflow state into visible artifacts and reusable commands.
+
+## The Core GSD Lifecycle
+
+Typical lifecycle:
+
+1. `gsd-progress`: inspect current state
+2. `gsd-map-codebase`: build shared repo context when needed
+3. `gsd-discuss-phase`: narrow the phase boundary
+4. `gsd-research-phase`: gather implementation evidence
+5. `gsd-plan-phase`: turn scope into execution artifacts
+6. `gsd-execute-phase`: carry out the phase
+7. `gsd-add-tests`: close testing gaps
+8. `gsd-verify-work`: check user-facing behavior
+9. `gsd-validate-phase`: audit structural completeness
+10. `gsd-pause-work` or `gsd-complete-milestone`: preserve or close state
+
+## Why GSD Matters
+
+GSD is useful because it makes workflow control explicit.
+
+It answers questions like:
+
+- what phase are we in?
+- what has already been decided?
+- what plan is active?
+- what has been verified?
+- what is the next command?
+
+That reduces drift and makes long-running work resumable.
+
+## Full GSD Skill Reference
+
+### Project Setup And Configuration
+
+- `gsd-new-project`: Initialize a new project with deep context gathering and `PROJECT.md`.
+- `gsd-new-milestone`: Start a new milestone cycle, update `PROJECT.md`, and route to requirements.
+- `gsd-settings`: Configure GSD workflow toggles and model profile.
+- `gsd-set-profile`: Switch model profile for GSD agents.
+- `gsd-help`: Show available GSD commands and usage guide.
+- `gsd-update`: Update GSD to the latest version with changelog display.
+- `gsd-health`: Diagnose planning-directory health and optionally repair issues.
+
+### Discovery And Planning
+
+- `gsd-progress`: Check project progress, show context, and route to the next action.
+- `gsd-map-codebase`: Analyze a codebase with parallel mapper agents to produce `.planning/codebase/` documents.
+- `gsd-discuss-phase`: Gather phase context through adaptive questioning before planning.
+- `gsd-list-phase-assumptions`: Surface assumptions about a phase approach before planning.
+- `gsd-research-phase`: Research how to implement a phase as a standalone discovery step.
+- `gsd-plan-phase`: Create a detailed phase plan with a verification loop.
+- `gsd-ui-phase`: Generate a UI design contract in `UI-SPEC.md` for frontend phases.
+- `gsd-plan-milestone-gaps`: Create phases that close gaps found in milestone auditing.
+
+### Execution And Debugging
+
+- `gsd-execute-phase`: Execute all plans in a phase with wave-based parallelization.
+- `gsd-quick`: Execute a quick task with GSD guarantees while skipping optional agents.
+- `gsd-debug`: Run a systematic debugging flow with persistent state across context resets.
+- `gsd-autonomous`: Run all remaining phases autonomously through discuss, plan, and execute.
+- `gsd-add-tests`: Generate tests for a completed phase from UAT criteria and implementation.
+- `gsd-reapply-patches`: Reapply local modifications after a GSD update.
+
+### Validation And Review
+
+- `gsd-verify-work`: Validate built features through conversational UAT.
+- `gsd-validate-phase`: Retroactively audit and fill Nyquist validation gaps for a completed phase.
+- `gsd-ui-review`: Run a retroactive six-pillar visual audit of implemented frontend code.
+- `gsd-audit-milestone`: Audit milestone completion against original intent before archiving.
+
+### Roadmap And Milestone Maintenance
+
+- `gsd-add-phase`: Add a phase to the end of the current milestone in the roadmap.
+- `gsd-insert-phase`: Insert urgent work as a decimal phase between existing phases.
+- `gsd-remove-phase`: Remove a future phase from the roadmap and renumber later phases.
+- `gsd-complete-milestone`: Archive a completed milestone and prepare for the next version.
+- `gsd-cleanup`: Archive accumulated phase directories from completed milestones.
+
+### Continuity And Utilities
+
+- `gsd-pause-work`: Create a context handoff when pausing work mid-phase.
+- `gsd-resume-work`: Resume work from a previous session with full context restoration.
+- `gsd-add-todo`: Capture an idea or task as a todo from the current conversation context.
+- `gsd-check-todos`: List pending todos and select one to work on.
+- `gsd-stats`: Display project statistics across phases, plans, requirements, git metrics, and timeline.
+- `gsd-join-discord`: Join the GSD Discord community.
