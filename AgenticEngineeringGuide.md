@@ -40,8 +40,6 @@
   - [Common Failure Modes](#common-failure-modes)
   - [What Claude Code Teaches](#what-claude-code-teaches)
 - [VI. Problem Framing, Research, And Spec-Driven Engineering](#vi-problem-framing-research-and-spec-driven-engineering)
-  - [Why This Layer Comes Next](#why-this-layer-comes-next)
-  - [What Phase 03.2 Will Add](#what-phase-032-will-add)
 - [VII. GSD As A Workflow Framework](#vii-gsd-as-a-workflow-framework)
   - [What GSD Adds](#what-gsd-adds)
   - [The Core GSD Lifecycle](#the-core-gsd-lifecycle)
@@ -422,7 +420,7 @@ Recovery should be bounded:
 
 ## Design Implication
 
-The main design question is not "which model?" It is "what operating system surrounds the model?"
+The main design question at the environment layer is not "which model?" It is "what operating system surrounds the model?"
 
 A strong agent environment gives the model:
 
@@ -434,6 +432,8 @@ A strong agent environment gives the model:
 - visible verification
 
 When these are weak, the system becomes opaque. When they are explicit, the system becomes controllable.
+
+That is the setup for the next section. Once the environment contract is clear, it helps to look at one harness that exposes those surfaces directly before moving up again to workflow design.
 
 ---
 
@@ -617,7 +617,7 @@ It shows that a useful agent harness is not just:
 - a prompt
 - a tool list
 
-It is a controlled environment with:
+It is a controlled harness with:
 
 - permissions
 - execution rules
@@ -626,33 +626,27 @@ It is a controlled environment with:
 - resumability
 - workflow conventions
 
-That is the larger lesson.
+That is the larger lesson. A harness like this makes the environment patterns concrete, but it still does not answer how work should be framed, researched, and specified before execution. That next layer belongs between the harness and the final workflow framework example.
 
 ---
 
 # VI. Problem Framing, Research, And Spec-Driven Engineering
 
-The guide needs one more layer before the final GSD example.
-
-Sections `IV` and `V` explain the environment and then one concrete harness. The next layer is the workflow-design question: how good work gets framed, researched, scoped, and turned into explicit specs before execution starts.
-
-## Why This Layer Comes Next
+Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how good work gets framed, researched, scoped, and turned into explicit specs before execution starts.
 
 Once an agent can inspect files, run commands, produce artifacts, and verify outcomes, the quality of the work no longer depends only on tool access. It also depends on whether the task was framed correctly, whether the system gathered the right evidence, and whether the execution contract was explicit enough to control scope.
 
-That is why workflow design belongs here rather than being buried inside the final framework example.
+That is why this section belongs here rather than being buried inside the final framework example.
 
-## What Phase 03.2 Will Add
+Phase `03.2` will add the substantive material on problem framing, research loops, workflow design, and spec-driven execution.
 
-Phase `03.2` will fill this section with the substantive material on problem framing, research loops, workflow design, and spec-driven execution.
-
-For Phase `03.1`, this section stays a reserved bridge. Its job is to mark that the guide has to move from harness behavior up to workflow design before it closes with GSD as one concrete framework built on top of that layer.
+For Phase `03.1`, this section stays a reserved bridge. Its job is only to mark the move from harness behavior up to workflow design before the guide closes with GSD as one concrete framework layered on top of that design layer.
 
 ---
 
 # VII. GSD As A Workflow Framework
 
-GSD is a workflow framework layered on top of the kind of local-agent environment described above.
+GSD is a workflow framework layered on top of the kind of local-agent environment and workflow-design layer described above.
 
 Layer boundary:
 
