@@ -14,7 +14,7 @@
 
 ### Draft Preservation
 
-- [x] **PRES-01**: Existing content in [AgenticAIGuide.md](/home/nick/wd/agentic_guide/AgenticAIGuide.md) before the `# Agentic Frameworks` heading remains unchanged unless the user explicitly approves edits.
+- [x] **PRES-01**: Existing content in [AgenticEngineeringGuide.md](/home/nick/wd/agentic_guide/AgenticEngineeringGuide.md) before the `# IV. Agentic Frameworks` heading remains unchanged unless the user explicitly approves edits.
 - [x] **PRES-02**: New work integrates with the existing draft rather than replacing it.
 
 ### Guide Structure
@@ -32,6 +32,13 @@
 - [x] **GSD-01**: Guide describes GSD (Get Shit Done) as a concrete workflow framework built on top of a local tool-using agent environment.
 - [x] **GSD-02**: Guide includes a categorized reference list of the GSD skills named by the user, with short descriptions.
 - [x] **GSD-03**: Guide explains how GSD makes planning, execution, validation, workflow control, and maintenance explicit without turning the document into product documentation.
+
+### Document Architecture And Flow
+
+- [x] **FLOW-01**: The guide has a clear top-level argument from introduction through GSD.
+- [x] **FLOW-02**: The introduction distinguishes development-time use from production-system use without interweaving that distinction through unrelated sections.
+- [x] **FLOW-03**: The engineering-workflow perspective becomes equally central to the document's structure.
+- [x] **FLOW-04**: Sections I-III are assessed and reworked only where needed to support the new flow.
 
 ### Reader Outcome
 
@@ -83,13 +90,17 @@
 | GSD-01 | Phase 02.1 | Complete |
 | GSD-02 | Phase 02.1 | Complete |
 | GSD-03 | Phase 02.1 | Complete |
-| OUTC-01 | Phase 3 | Pending |
-| OUTC-02 | Phase 3 | Pending |
-| OUTC-03 | Phase 3 | Pending |
-| OUTC-04 | Phase 3 | Pending |
-| EDIT-01 | Phase 3 | Pending |
-| EDIT-02 | Phase 3 | Pending |
-| EDIT-03 | Phase 3 | Pending |
+| FLOW-01 | Phase 03.1 | Complete |
+| FLOW-02 | Phase 03.1 | Complete |
+| FLOW-03 | Phase 03.1 | Complete |
+| FLOW-04 | Phase 03.1 | Complete |
+| OUTC-01 | Phase 4 | Pending |
+| OUTC-02 | Phase 4 | Pending |
+| OUTC-03 | Phase 4 | Pending |
+| OUTC-04 | Phase 4 | Pending |
+| EDIT-01 | Phase 4 | Pending |
+| EDIT-02 | Phase 4 | Pending |
+| EDIT-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 23 total
@@ -98,4 +109,4 @@
 
 ---
 *Requirements defined: 2026-03-19*
-*Last updated: 2026-03-20 after completing 02.1-02-PLAN.md*
+*Last updated: 2026-03-23 after completing 03.1-01-PLAN.md*
