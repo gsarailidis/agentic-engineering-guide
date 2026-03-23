@@ -25,6 +25,7 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 
 **Core value:** Give newcomers a precise mental model of terminal-native local agents and the patterns they unlock, without hype, vagueness, or unnecessary breadth.
 **Current focus:** Phase 03.1 — Document Architecture And Flow
+**Active boundary guardrail:** `bash .planning/phases/03.1-document-architecture-and-flow/verify-stabilized-boundary.sh`
 
 ## Current Position
 
@@ -72,6 +73,7 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 - [Phase 03.1]: Keep the development-time versus production-system distinction in the introduction instead of repeating it later.
 - [Phase 03.1]: Treat sections I-III as minimal prerequisites with tightened handoffs rather than rewriting them wholesale.
 - [Phase 03.1]: Reserve Phase 03.2 as a top-level bridge section before GSD without drafting the substantive 03.2 body early.
+- [Phase 03.1]: Protect the stabilized guide prefix through the line before `# VI. Problem Framing, Research, And Spec-Driven Engineering` with `verify-stabilized-boundary.sh` as the active downstream guardrail.
 
 ### Roadmap Evolution
 - Phase 02.1 inserted after Phase 2: Add GSD framework example and skill reference (URGENT)
