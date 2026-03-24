@@ -40,6 +40,15 @@
 - [x] **FLOW-03**: The engineering-workflow perspective becomes equally central to the document's structure.
 - [x] **FLOW-04**: Sections I-III are assessed and reworked only where needed to support the new flow.
 
+### Spec-Driven Engineering
+
+- [x] **03.2-REQ-01**: Replace the reserved `# VI. Spec-Driven Engineering` bridge in `AgenticEngineeringGuide.md` with substantive content.
+- [x] **03.2-REQ-02**: Explain the chain from problem framing to research to workflow design to explicit specs as a coherent engineering layer.
+- [x] **03.2-REQ-03**: Make specs the center of gravity and present them as execution contracts that control scope, assumptions, and verification.
+- [x] **03.2-REQ-04**: Keep the section general to terminal-native local-agent engineering rather than GSD-specific process documentation.
+- [x] **03.2-REQ-05**: Keep the section compact, scannable, and aligned with the surrounding guide voice.
+- [x] **03.2-REQ-06**: Create a clean bridge into `# VII. GSD As A Workflow Framework`.
+
 ### Reader Outcome
 
 - [ ] **OUTC-01**: Reader can explain what distinguishes a local tool-using agent environment from plain chat interaction.
@@ -94,6 +103,12 @@
 | FLOW-02 | Phase 03.1 | Complete |
 | FLOW-03 | Phase 03.1 | Complete |
 | FLOW-04 | Phase 03.1 | Complete |
+| 03.2-REQ-01 | Phase 03.2 | Complete |
+| 03.2-REQ-02 | Phase 03.2 | Complete |
+| 03.2-REQ-03 | Phase 03.2 | Complete |
+| 03.2-REQ-04 | Phase 03.2 | Complete |
+| 03.2-REQ-05 | Phase 03.2 | Complete |
+| 03.2-REQ-06 | Phase 03.2 | Complete |
 | OUTC-01 | Phase 4 | Pending |
 | OUTC-02 | Phase 4 | Pending |
 | OUTC-03 | Phase 4 | Pending |

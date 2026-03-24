@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 03.1
-current_phase_name: Document Architecture And Flow
-current_plan: 1
-status: in_progress
-stopped_at: Completed 03.1-document-architecture-and-flow-01-PLAN.md
-last_updated: "2026-03-23T17:44:53.681Z"
-last_activity: 2026-03-23
+current_phase: 03.2
+current_phase_name: Spec-Driven Engineering
+current_plan: 0
+status: verifying
+stopped_at: Completed 03.2-01-PLAN.md
+last_updated: "2026-03-24T12:51:13.820Z"
+last_activity: 2026-03-24
 progress:
   total_phases: 6
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 7
-  percent: 88
+  completed_phases: 5
+  total_plans: 9
+  completed_plans: 9
+  percent: 100
 ---
 
 # Project State
@@ -24,20 +24,20 @@ progress:
 See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 2026-03-19)
 
 **Core value:** Give newcomers a precise mental model of terminal-native local agents and the patterns they unlock, without hype, vagueness, or unnecessary breadth.
-**Current focus:** Phase 03.1 — Document Architecture And Flow
+**Current focus:** Phase 03.2 — Spec-Driven Engineering
 **Active boundary guardrail:** `bash .planning/phases/03.1-document-architecture-and-flow/verify-stabilized-boundary.sh`
 
 ## Current Position
 
-**Current Phase:** 03.1
-**Current Phase Name:** Document Architecture And Flow
+**Current Phase:** 03.2
+**Current Phase Name:** Spec-Driven Engineering
 **Total Phases:** 6
-**Current Plan:** 1
-**Total Plans in Phase:** 2
-**Status:** In progress
-**Last Activity:** 2026-03-23
+**Current Plan:** 0
+**Total Plans in Phase:** 0
+**Status:** Phase complete — ready for verification
+**Last Activity:** 2026-03-24
 
-**Progress:** [█████████░] 88%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -50,6 +50,8 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 | Phase 02.1-add-gsd-framework-example-and-skill-reference P01 | 1 min | 2 tasks | 1 files |
 | Phase 02.1-add-gsd-framework-example-and-skill-reference P02 | 1 min | 2 tasks | 1 files |
 | Phase 03.1 P01 | 2h 15m | 3 tasks | 4 files |
+| Phase 03.1 P02 | 17h 37m elapsed across user review pause | 3 tasks | 6 files |
+| Phase 03.2 P01 | 4 min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -73,12 +75,15 @@ See: [PROJECT.md](/home/nick/wd/agentic_guide/.planning/PROJECT.md) (updated 202
 - [Phase 03.1]: Keep the development-time versus production-system distinction in the introduction instead of repeating it later.
 - [Phase 03.1]: Treat sections I-III as minimal prerequisites with tightened handoffs rather than rewriting them wholesale.
 - [Phase 03.1]: Reserve Phase 03.2 as a top-level bridge section before GSD without drafting the substantive 03.2 body early.
-- [Phase 03.1]: Protect the stabilized guide prefix through the line before `# VI. Problem Framing, Research, And Spec-Driven Engineering` with `verify-stabilized-boundary.sh` as the active downstream guardrail.
+- [Phase 03.1]: Protect the stabilized guide prefix through the line before `# VI. Spec-Driven Engineering` with `verify-stabilized-boundary.sh` as the active downstream guardrail.
+- [Phase 03.1]: Accept the March 24 guide wording revisions, rename the reserved `# VI` bridge to `Spec-Driven Engineering`, and refresh the stabilized snapshot to treat that wording as canonical.
+- [Phase 03.2]: Make specs the center of gravity in # VI and treat framing, research, and workflow design as upstream inputs to the execution contract.
+- [Phase 03.2]: Treat the accepted # VI subsection headings and their TOC entries as canonical, then refresh the 03.1 boundary snapshot instead of forcing the guide back to the older reserved-bridge prefix.
 
 ### Roadmap Evolution
 - Phase 02.1 inserted after Phase 2: Add GSD framework example and skill reference (URGENT)
 - Phase 03.1 inserted after Phase 02.1: Document Architecture And Flow (URGENT)
-- Phase 03.2 inserted after Phase 02.1: Problem Framing, Research, And Spec-Driven Engineering (URGENT)
+- Phase 03.2 inserted after Phase 02.1: Spec-Driven Engineering (URGENT)
 - Previous Phase 3 renumbered to Phase 4: Tighten And Verify
 
 ### Pending Todos
@@ -89,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-**Last session:** 2026-03-23T17:44:53.675Z
-**Stopped At:** Completed 03.1-document-architecture-and-flow-01-PLAN.md
+**Last session:** 2026-03-24T12:51:13.815Z
+**Stopped At:** Completed 03.2-01-PLAN.md
 **Resume File:** None
