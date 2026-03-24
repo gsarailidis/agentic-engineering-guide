@@ -20,7 +20,7 @@ This roadmap is structured to preserve the approved early draft, define the guid
 | 2 | Add The New Core Sections | Write the agreed post-framework sections focused on local tool-using agent patterns | STRU-01, STRU-02, STRU-03, STRU-04, STRU-05, STRU-06, STRU-07 |
 | 02.1 | Add GSD Framework Example And Skill Reference | Add GSD as a concrete workflow-framework example and include its categorized skill reference | GSD-01, GSD-02, GSD-03 |
 | 03.1 | Document Architecture And Flow | Rework the guide's top-level flow, intro, and section sequencing so the argument is coherent before further expansion | FLOW-01, FLOW-02, FLOW-03, FLOW-04 |
-| 03.2 | Problem Framing, Research, And Spec-Driven Engineering | Add the new top-level section on framing, research, workflow design, and specs before GSD | TBD during planning |
+| 03.2 | Spec-Driven Engineering | Add the new top-level section on framing, research, workflow design, and explicit specs before GSD | TBD during planning |
 | 4 | Tighten And Verify | Make the guide clear, compact, newcomer-friendly, and within scope after the new structural phases land | OUTC-01, OUTC-02, OUTC-03, OUTC-04, EDIT-01, EDIT-02, EDIT-03 |
 
 ## Phase Details
@@ -105,11 +105,11 @@ Plans:
 - FLOW-04
 
 **Depends on:** Phase 02.1
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed
 
 Plans:
 - [x] `03.1-01-PLAN.md` — Lock the section-role contract and refactor the guide into the new top-level spine
-- [ ] `03.1-02-PLAN.md` — Tighten the final handoffs and create the 03.1-local stabilized-boundary verifier
+- [x] `03.1-02-PLAN.md` — Tighten the final handoffs and create the 03.1-local stabilized-boundary verifier
 
 **Success criteria:**
 1. The guide has a clear top-level argument from introduction through GSD.
@@ -117,15 +117,23 @@ Plans:
 3. The engineering-workflow perspective becomes equally central to the document's structure.
 4. Sections I-III are assessed and reworked only where needed to support the new flow.
 
-### Phase 03.2: Problem Framing, Research, And Spec-Driven Engineering (INSERTED)
+### Phase 03.2: Spec-Driven Engineering (INSERTED)
 
-**Goal:** Add a full top-level section before GSD covering framing, research, design, workflow design, and specs as core parts of agentic engineering.
+**Goal:** Add a focused top-level section before GSD covering framing, research, workflow design, and explicit specs as core parts of spec-driven engineering.
 
 **Requirements:**
-- TBD during planning
+- 03.2-REQ-01
+- 03.2-REQ-02
+- 03.2-REQ-03
+- 03.2-REQ-04
+- 03.2-REQ-05
+- 03.2-REQ-06
 
 **Depends on:** Phase 03.1
-**Plans:** 0/0 plans complete
+**Plans:** 0/1 plans complete
+
+Plans:
+- [ ] `03.2-01-PLAN.md` — Replace the reserved `# VI` bridge with a substantive specs-centered section and validate the handoff into GSD
 
 **Success criteria:**
 1. The guide includes a dedicated top-level section before GSD for framing, research, workflow design, and spec-driven engineering.
@@ -167,9 +175,9 @@ Plans:
 | 1. Frame The Guide | 2/2 | Complete | 2026-03-19 |
 | 2. Add The New Core Sections | 2/2 | Complete | 2026-03-20 |
 | 02.1. Add GSD Framework Example And Skill Reference | 2/2 | Complete | 2026-03-20 |
-| 03.1. Document Architecture And Flow | 1/2 | In Progress | 2026-03-23 |
-| 03.2. Problem Framing, Research, And Spec-Driven Engineering | 0/0 | Not started | - |
+| 03.1. Document Architecture And Flow | 2/2 | Complete | 2026-03-24 |
+| 03.2. Spec-Driven Engineering | 0/0 | Not started | - |
 | 4. Tighten And Verify | 0/0 | Not started | - |
 
 ---
-*Last updated: 2026-03-23 after completing 03.1-01-PLAN.md*
+*Last updated: 2026-03-24 after completing 03.1-02-PLAN.md*
