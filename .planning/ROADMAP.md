@@ -144,6 +144,12 @@ Plans:
 
 **Goal:** Ensure the result is concise, technical, and useful to newcomers after the new architecture and framing work lands.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] `04-01-PLAN.md` — Tighten the editable `# VI` and `# VII` body while creating the Phase 4 evidence artifacts
+- [ ] `04-02-PLAN.md` — Complete the reader-outcome audit and record the final flow and scope verification
+
 **Requirements:**
 - OUTC-01
 - OUTC-02
@@ -177,7 +183,7 @@ Plans:
 | 02.1. Add GSD Framework Example And Skill Reference | 2/2 | Complete | 2026-03-20 |
 | 03.1. Document Architecture And Flow | 2/2 | Complete | 2026-03-24 |
 | 03.2. Spec-Driven Engineering | 1/1 | Complete | 2026-03-24 |
-| 4. Tighten And Verify | 0/0 | Not started | - |
+| 4. Tighten And Verify | 0/2 | Planned | 2026-03-24 |
 
 ---
-*Last updated: 2026-03-24 after completing 03.2-01-PLAN.md*
+*Last updated: 2026-03-24 after planning Phase 4*
