@@ -58,12 +58,12 @@ This guide is about agentic engineering in local, tool-using environments.
 
 More specifically, it is about development-time terminal-native agent work: systems where a model is not only generating text, but is operating inside a real workspace with files, commands, tools, permissions, and durable artifacts.
 
-That is not the same thing as a production-system agent embedded in a shipped product or backend service. Those systems have related concerns, but this guide is centered on the local working environment that lets an agent inspect, change, verify, and hand off real project state.
+That is not the same thing as a production-system agent embedded in a shipped product or backend service. However, those systems have related concerns. Understanding the local development environment also helps clarify how production agents with similar capabilities are designed.
 
 What the guide covers:
 
 - the minimal concepts needed to talk clearly about agentic behavior and agentic engineering
-- the vocabulary that the rest of the guide reuses
+- the vocabulary that the guide uses
 - the structure of terminal-native agent environments
 - Claude Code as a detailed concrete harness example
 - the workflow-design layer that sits above the harness
@@ -75,12 +75,10 @@ What level of depth to expect:
 - sections `I-III` are minimal prerequisites, not a full survey
 - the framework section explains the environment-level operating patterns in moderate depth
 - the Claude Code section is intentionally more detailed and concrete
-- the workflow-design section is a reserved bridge for the next phase, not a full chapter yet
-- the GSD section explains structure, lifecycle, and skill surface, but stops short of becoming operator documentation
+- the workflow-design section is a reserved bridge for the next phase
+- the GSD section explains structure, lifecycle, and skill surface
 
-The intended path is: orient the reader, establish the minimal concepts, explain the environment patterns, make them concrete through one harness example, then move up to workflow design and finally to one explicit workflow framework.
-
-The goal is to give a clear mental model of the space and its moving parts. It is not a prompt cookbook, a product manual, or a broad survey of every agent framework.
+The goal is to give a clear mental model of the space and its moving parts.
 
 # I. Agentic AI (the behavior)
 
@@ -207,8 +205,6 @@ Examples:
 - OpenAI agent frameworks
 - custom orchestrators
 
-In the rest of this guide, the harness is the layer that exposes the workspace, tool surface, permissions, and execution rhythm that later sections analyze in more detail.
-
 ---
 
 ## Tools
@@ -256,7 +252,7 @@ Tools are usually exposed through structured interfaces.
 
 **Skills are reusable high-level behaviors.**
 
-Tools expose raw capabilities. Skills package repeatable ways of using them.
+Tools expose capabilities. Skills package repeatable ways of working: steps, constraints, reasoning patterns, and tool usage.
 
 A skill usually defines:
 
@@ -314,12 +310,11 @@ Stored outside the current context window.
 
 Examples:
 
-- vector databases
-- knowledge graphs
-- workflow history
+- planning artifacts
 - durable repo artifacts
-
-These definitions are only the shared vocabulary. The next section shifts from terminology to the environment patterns that make local-agent work distinct.
+- workflow history
+- documentation
+- vector databases
 
 ---
 
@@ -381,6 +376,7 @@ Tools expose primitives. Skills and workflows package repeatable operating patte
 
 Why this matters:
 
+- efficiency
 - less improvisation
 - less drift
 - more predictable outputs
@@ -388,7 +384,7 @@ Why this matters:
 
 ## Delegation And Parallel Work
 
-Delegation is scoped decomposition.
+Delegation is scoped decomposition. The main orchestrator agent can decompose work and delegate it to sub-agents that it spawns on the fly.
 
 Good delegated work includes:
 
@@ -433,15 +429,11 @@ A strong agent environment gives the model:
 
 When these are weak, the system becomes opaque. When they are explicit, the system becomes controllable.
 
-That is the setup for the next section. Once the environment contract is clear, it helps to look at one harness that exposes those surfaces directly before moving up again to workflow design.
-
 ---
 
 # V. Claude Code
 
 Claude Code is one of the clearest examples of a terminal-native local-agent harness because it makes the execution contract explicit.
-
-It matters for this guide not as a product review, but as a concrete example of what a serious local-agent environment looks like.
 
 ## Why Claude Code Is A Good Reference Example
 
@@ -495,9 +487,9 @@ With shell access, the system can:
 - check git state
 - run project-specific tooling
 
-This matters because the environment can answer the model back. A failing test, a bad exit code, or a compiler error is harder evidence than generated prose.
+This matters because the environment gives the model direct feedback. A failing test, a bad exit code, or a compiler error is more reliable than generated prose.
 
-## Structured Tools
+## Shell And Structured Tools
 
 Claude Code is not only "a model with bash." It also exposes structured tools with narrower contracts.
 
@@ -559,7 +551,7 @@ Delegation works well when the parent agent gives a subagent:
 - success criteria
 - a return format
 
-This makes parallel work practical. Without those boundaries, delegation becomes noise.
+This makes parallel work practical. Without those boundaries, delegation becomes noisy.
 
 ## The Real Working Rhythm
 
@@ -573,8 +565,6 @@ A more reliable rhythm looks like:
 4. execute
 5. verify
 6. summarize what changed
-
-This rhythm matters more than any single model feature.
 
 ## Why Claude Code Feels Different From Chat
 
@@ -607,40 +597,47 @@ Common problems:
 
 This is why the surrounding engineering matters so much.
 
-## What Claude Code Teaches
-
-Claude Code makes the local-agent pattern legible.
-
-It shows that a useful agent harness is not just:
-
-- a model
-- a prompt
-- a tool list
-
-It is a controlled harness with:
-
-- permissions
-- execution rules
-- artifacts
-- verification
-- resumability
-- workflow conventions
-
-That is the larger lesson. A harness like this makes the environment patterns concrete, but it still does not answer how work should be framed, researched, and specified before execution. That next layer belongs between the harness and the final workflow framework example.
-
 ---
 
-# VI. Problem Framing, Research, And Spec-Driven Engineering
+# VI. Spec-Driven Engineering
 
-Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how good work gets framed, researched, scoped, and turned into explicit specs before execution starts.
+Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how capable local-agent systems get turned into bounded engineering work that can actually be trusted.
 
-Once an agent can inspect files, run commands, produce artifacts, and verify outcomes, the quality of the work no longer depends only on tool access. It also depends on whether the task was framed correctly, whether the system gathered the right evidence, and whether the execution contract was explicit enough to control scope.
+## Framing Decides What Work Exists
 
-That is why this section belongs here rather than being buried inside the final framework example.
+The first failure mode is not bad execution. It is solving the wrong problem. A loose request gives the agent too many possible interpretations, so it fills the gap with its own guess about what matters. That guess may still produce activity, edits, and even passing checks, but it can miss the real target completely.
 
-Phase `03.2` will add the substantive material on problem framing, research loops, workflow design, and spec-driven execution.
+Problem framing decides what work exists by deciding what the task is really trying to change, what constraints are fixed, and where the boundaries are. A strong frame names the outcome, the protected surfaces, and the reason the work matters. It turns "do something in this area" into "change this specific thing for this reason without spilling into adjacent work."
 
-For Phase `03.1`, this section stays a reserved bridge. Its job is only to mark the move from harness behavior up to workflow design before the guide closes with GSD as one concrete framework layered on top of that design layer.
+That is why framing is not just prompt polish. It is the first scope control. If the frame is vague, every later step inherits that vagueness.
+
+## Research Changes What The Agent Should Believe
+
+Once the work is framed, the next question is whether the current understanding is actually true. Local agents can inspect the codebase, read docs, check configs, run commands, and compare claims against the live environment. That means research is not optional background reading. It is the mechanism that replaces assumption with evidence.
+
+Research changes what the agent should believe about the task. It may reveal that the important file is somewhere else, that an existing constraint makes the original approach invalid, or that a supposed gap is already covered. A short contrast makes the point: "improve onboarding" is still mostly guesswork, but "reduce first-run setup confusion after checking the current setup path, error messages, and docs" gives the work a factual base.
+
+Good research narrows uncertainty before execution starts. It tells the system what is real in this repository, this environment, and this documentation set instead of what sounded plausible at the start.
+
+## Workflow Design Determines How Work Moves
+
+Framing identifies the target. Research corrects the picture. Workflow design decides how the work should move from there.
+
+This is the layer that chooses sequencing, decomposition, checkpoints, and feedback loops. Should the task be handled in one pass or split into smaller units? What artifacts need to be created before execution begins? Where should verification happen? What should stop progress and force a review? Those are workflow-design questions, and they matter because capable agents can move quickly in the wrong direction if the motion itself is poorly structured.
+
+Workflow design is therefore the bridge between understanding and execution. It converts a researched problem into an approach that is paced, inspectable, and recoverable instead of improvisational.
+
+## Specs Are The Execution Contract
+
+A spec is the execution contract.
+
+The earlier steps matter because they produce the material that the contract must capture. Framing defines the real target. Research defines what is actually true. Workflow design defines how the work should proceed. The spec turns those decisions into the explicit artifact that governs execution.
+
+That contract should make the work legible before implementation begins. It names what is in `scope`, which `assumptions` are being made, which `artifacts` should exist when the work is done, what evidence counts, and what `verification` will decide whether the result is acceptable. It also makes absence visible. If scope is missing, the task can expand without limit. If assumptions are hidden, the plan can be built on fiction. If artifacts are unnamed, the work has no concrete outputs. If verification is weak, completion becomes a matter of vibe.
+
+This is why specs matter so much in local-agent engineering. The agent already knows how to read, edit, run, and check. The harder problem is making sure those capabilities are aimed through an explicit contract instead of through a loose intention. A good spec does not add bureaucracy. It reduces ambiguity, bounds autonomy, and creates a shared reference for execution, review, and recovery.
+
+Once those contracts, artifacts, and verification loops are made explicit, they can be packaged into a framework with reusable workflow structure. That is the handoff into `# VII`: GSD is one concrete example of that framework layer built on top of the local-agent environment described so far.
 
 ---
 
@@ -685,7 +682,9 @@ Typical lifecycle:
 
 ## Why GSD Matters
 
-GSD is useful because it makes workflow control explicit.
+GSD matters because it turns workflow control into explicit structure.
+
+That improves quality by making plans, verification, checkpoints, and assumptions visible. It improves efficiency by reducing rework, limiting drift, and making it clear what the next bounded action is. It also makes long-running work resumable, because state, artifacts, and progress are preserved instead of reconstructed from memory.
 
 It answers questions like:
 
@@ -694,8 +693,6 @@ It answers questions like:
 - what plan is active?
 - what has been verified?
 - what is the next command?
-
-That reduces drift and makes long-running work resumable.
 
 ## Full GSD Skill Reference
 
