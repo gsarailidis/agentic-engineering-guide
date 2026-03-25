@@ -3,12 +3,12 @@
 - [Introduction](#introduction)
 - [I. Agentic AI (the behavior)](#i-agentic-ai-the-behavior)
 - [II. Agentic Engineering (the discipline)](#ii-agentic-engineering-the-discipline)
-  - [1. Control of the loop](#1-control-of-the-loop)
-  - [2. Reliability](#2-reliability)
-  - [3. Observability](#3-observability)
-  - [4. Evaluation](#4-evaluation)
-  - [5. Cost control](#5-cost-control)
-  - [6. Architecture](#6-architecture)
+  - [Control of the loop](#control-of-the-loop)
+  - [Reliability](#reliability)
+  - [Observability](#observability)
+  - [Evaluation](#evaluation)
+  - [Cost control](#cost-control)
+  - [Architecture](#architecture)
 - [III. Definitions](#iii-definitions)
   - [Agent](#agent)
   - [Agent harness](#agent-harness)
@@ -38,21 +38,21 @@
   - [The Real Working Rhythm](#the-real-working-rhythm)
   - [Why Claude Code Feels Different From Chat](#why-claude-code-feels-different-from-chat)
   - [Common Failure Modes](#common-failure-modes)
-- [V.5 Context Window Management](#v5-context-window-management)
+- [VI. Context Window Management](#vi-context-window-management)
   - [The Tradeoff: Sufficiency vs Bloat](#the-tradeoff-sufficiency-vs-bloat)
-  - [What the Model Actually Has Access To](#what-the-model-actually-has-access-to)
+  - [What The Model Actually Has Access To](#what-the-model-actually-has-access-to)
   - [The Real Failure Modes](#the-real-failure-modes)
-  - [What “Context Window Management” Means](#what-context-window-management-means)
+  - [What "Context Window Management" Means](#what-context-window-management-means)
   - [The Three Context Layers](#the-three-context-layers)
   - [Design Implications](#design-implications)
   - [Practical Patterns](#practical-patterns)
   - [Relationship to the Next Section](#relationship-to-the-next-section)
-- [VI. Spec-Driven Engineering](#vi-spec-driven-engineering)
+- [VII. Spec-Driven Engineering](#vii-spec-driven-engineering)
   - [Framing Decides What Work Exists](#framing-decides-what-work-exists)
   - [Research Changes What The Agent Should Believe](#research-changes-what-the-agent-should-believe)
   - [Workflow Design Determines How Work Moves](#workflow-design-determines-how-work-moves)
   - [Specs Are The Execution Contract](#specs-are-the-execution-contract)
-- [VII. GSD As A Workflow Framework](#vii-gsd-as-a-workflow-framework)
+- [VIII. GSD As A Workflow Framework](#viii-gsd-as-a-workflow-framework)
   - [What GSD Adds](#what-gsd-adds)
   - [The Core GSD Lifecycle](#the-core-gsd-lifecycle)
   - [Why GSD Matters](#why-gsd-matters)
@@ -131,7 +131,7 @@ In this guide, that discipline matters because the system is not acting in the a
 
 It therefore deals with:
 
-## 1. Control of the loop
+## Control of the loop
 
 - planning structure
 - stopping conditions
@@ -139,7 +139,7 @@ It therefore deals with:
 - tool routing
 - guardrails
 
-## 2. Reliability
+## Reliability
 
 - hallucinated tool calls
 - runaway loops
@@ -147,28 +147,28 @@ It therefore deals with:
 - context explosion
 - tool misuse
 
-## 3. Observability
+## Observability
 
 - traces
 - tool decisions
 - intermediate outputs
 - failures
 
-## 4. Evaluation
+## Evaluation
 
 - step correctness
 - task completion
 - cost vs performance
 - trajectory quality
 
-## 5. Cost control
+## Cost control
 
 - model routing
 - caching
 - pruning
 - bounded depth
 
-## 6. Architecture
+## Architecture
 
 - memory
 - tools
@@ -619,7 +619,7 @@ This is why the surrounding engineering matters so much: more capability means t
 
 ---
 
-# V.5 Context Window Management
+# VI. Context Window Management
 
 Before specs, there is a more basic constraint:
 
@@ -629,8 +629,6 @@ This creates a fundamental tension:
 
 - **too little context -> the model guesses**
 - **too much context -> the model degrades**
-
-This is the core of context window management.
 
 You are not just supplying information. You are **controlling the model's working set**.
 
@@ -647,13 +645,11 @@ Two failure directions:
   - too much irrelevant or low-priority information
   - leads to weaker reasoning, distraction, and higher cost
 
-This is not linear. More context does not mean better performance.
-
-At some point, adding information **reduces accuracy instead of improving it**.
+This is not linear. More context does not mean better performance. At some point, adding information **reduces accuracy instead of improving it**.
 
 ## What The Model Actually Has Access To
 
-At any step, the model operates on:
+At any step, the model operates on three surfaces:
 
 1. **current context window**
 2. **what it can fetch via tools**
@@ -784,7 +780,7 @@ If context is controlled, specs become enforceable.
 
 ---
 
-# VI. Spec-Driven Engineering
+# VII. Spec-Driven Engineering
 
 Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how those capabilities get turned into bounded engineering work that can actually be trusted.
 
@@ -912,13 +908,13 @@ A good spec does not add bureaucracy. It:
 - bounds autonomy
 - creates a shared reference for execution, review, and recovery
 
-Once those contracts, artifacts, and verification loops are made explicit, they can be packaged into a framework with reusable workflow structure. That is the handoff into `# VII`: GSD is one concrete example of that framework layer built on top of the local-agent environment described so far.
+Once those contracts, artifacts, and verification loops are made explicit, they can be packaged into a framework with reusable workflow structure. That is the handoff into `# VIII`: GSD is one concrete example of that framework layer built on top of the local-agent environment described so far.
 
 ---
 
-# VII. GSD As A Workflow Framework
+# VIII. GSD As A Workflow Framework
 
-GSD is a workflow framework layered on top of the kind of local-agent environment and workflow-design layer described above.
+GSD (Get Shit Done) is a workflow framework layered on top of the kind of local-agent environment and workflow-design layer described above.
 
 Repository: `https://github.com/gsd-build/get-shit-done`
 
@@ -928,6 +924,11 @@ Layer boundary:
 - GSD: provides workflow structure on top of that environment
 
 GSD does not replace the harness. It organizes how work moves through it.
+
+It is useful to distinguish two starting conditions:
+
+- **greenfield**: a project that is being structured from the beginning, before the planning and execution system exists
+- **brownfield**: an existing project where the codebase, constraints, and local conventions are already there and need to be inspected before planning good work
 
 ## What GSD Adds
 
@@ -959,18 +960,7 @@ Typical greenfield lifecycle:
 9. `gsd-validate-phase`: audit structural completeness
 10. `gsd-complete-milestone`: archive the shipped milestone and prepare for the next one
 
-Typical brownfield lifecycle:
-
-1. `gsd-progress`: inspect current state
-2. `gsd-map-codebase`: build shared repo context when needed
-3. `gsd-discuss-phase`: narrow the phase boundary
-4. `gsd-research-phase`: gather implementation evidence
-5. `gsd-plan-phase`: turn scope into execution artifacts
-6. `gsd-execute-phase`: carry out the phase
-7. `gsd-add-tests`: close testing gaps
-8. `gsd-verify-work`: check user-facing behavior
-9. `gsd-validate-phase`: audit structural completeness
-10. `gsd-pause-work` or `gsd-complete-milestone`: preserve or close state
+Brownfield work usually enters the flow differently. Instead of starting with `gsd-new-project`, you normally start with `gsd-map-codebase` so the existing repository, constraints, and local conventions are made explicit before phase planning begins. After that, the flow returns to the same phase-oriented loop: discuss, research, plan, execute, verify, validate, and preserve state when needed.
 
 The difference matters because brownfield work starts from an existing codebase and existing constraints, while greenfield work starts by creating the planning structure that later phases will rely on.
 
