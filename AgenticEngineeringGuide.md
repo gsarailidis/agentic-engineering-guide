@@ -1,6 +1,6 @@
 ## Contents
 
-  - [Introduction](#introduction)
+- [Introduction](#introduction)
 - [I. Agentic AI (the behavior)](#i-agentic-ai-the-behavior)
 - [II. Agentic Engineering (the discipline)](#ii-agentic-engineering-the-discipline)
   - [1. Control of the loop](#1-control-of-the-loop)
@@ -55,7 +55,9 @@
     - [Roadmap And Milestone Maintenance](#roadmap-and-milestone-maintenance)
     - [Continuity And Utilities](#continuity-and-utilities)
 
-## Introduction
+---
+
+# Introduction
 
 This guide is about agentic engineering in local, tool-using environments.
 
@@ -69,19 +71,21 @@ What the guide covers:
 - the vocabulary that the guide uses
 - the structure of terminal-native agent environments
 - Claude Code as a detailed concrete harness example
-- the workflow-design layer that sits above the harness
+- spec-driven engineering; the workflow-design layer that sits above the harness
 - GSD as a workflow framework built on top of that kind of environment
 
-What level of depth to expect:
+How the guide is paced:
 
 - the introduction sets the subject, scope, and reading path
 - sections `I-III` are minimal prerequisites, not a full survey
 - the framework section explains the environment-level operating patterns in moderate depth
 - the Claude Code section is intentionally more detailed and concrete
-- the workflow-design section is a reserved bridge for the next phase
+- the workflow-design section explains how framing, research, workflow design, and specs turn capable local agents into bounded engineering work
 - the GSD section explains structure, lifecycle, and skill surface
 
-The goal is to give a clear mental model of the space and its moving parts.
+The goal is to give a clear mental model of the environment, the working patterns it makes possible, and the layers that sit on top of it.
+
+---
 
 # I. Agentic AI (the behavior)
 
@@ -164,7 +168,7 @@ It therefore deals with:
 - policies
 - orchestration
 
-Without explicit engineering, the system collapses into prompt spaghetti.
+Without explicit engineering, the system degrades into improvisation: unclear loops, weak boundaries, and unreliable outcomes.
 
 These concerns are the bridge into the rest of the guide. The following sections define the terms, then show how those concerns become visible in an actual local-agent environment.
 
@@ -182,7 +186,7 @@ An **agent** is a system that:
 4. observes results
 5. repeats until completion
 
-Agents operate through loops.
+What makes this an agent rather than a one-shot tool call is the loop.
 
 ---
 
@@ -199,7 +203,7 @@ It manages:
 - stopping conditions
 - safety rules
 
-The harness is the control system around the model.
+The harness is the control system around the model: it is what turns model capability into bounded behavior.
 
 Examples:
 
@@ -281,7 +285,7 @@ metadata:
 
 Steps:
 
-1. Run the workflow in .codex/get-shit-done/workflows/map-codebase.md
+1. Run the workflow in .codex/gsd/workflows/map-codebase.md
 2. Check for existing .planning/STATE.md and whether .planning/codebase/ already exists
 3. Spawn 4 parallel gsd-codebase-mapper subagents with different lenses
 4. Verify the expected output files exist
@@ -327,7 +331,7 @@ This guide is about **local tool-using agent environments**.
 
 The important shift is not "the model can call a tool." The important shift is that the model operates inside a real workspace it can inspect and change.
 
-Claude Code and Codex CLI are useful examples because they make this contract visible.
+Claude Code and Codex CLI are useful examples because they make this contract visible. This section stays at the environment layer. The next section shows what the same pattern looks like inside one concrete harness.
 
 ## Terminal-Native Agent Environments
 
@@ -339,7 +343,7 @@ A terminal-native agent environment usually includes:
 - permission boundaries
 - durable artifacts
 
-That changes the nature of the work. The system is no longer only generating text about the task. It is operating on the task's actual surfaces.
+That changes the nature of the work. The system is no longer only generating text about the task. It is operating on the task's actual surfaces, with real state and real consequences.
 
 ## The Core Operating Loop
 
@@ -359,6 +363,8 @@ In practice:
 - `check`: run tests, inspect output, review diffs, validate contracts
 - `iterate`: adjust based on evidence
 
+This is still the pattern layer. The point is not that every harness looks identical. The point is that local-agent work repeatedly converges on this kind of inspect-plan-act-check loop when the environment is designed well.
+
 ## Artifacts As Control Surfaces
 
 Artifacts are not just logs. They shape execution.
@@ -371,13 +377,13 @@ Common control artifacts:
 - `state file`: preserves position across sessions
 - `checklist`: turns "done" into explicit criteria
 
-Artifacts matter because local-agent work is long-running and interruptible.
+Artifacts matter because local-agent work is long-running, interruptible, and often collaborative across multiple turns or agents.
 
 ## Skills And Reusable Workflows
 
 Tools expose primitives. Skills and workflows package repeatable operating patterns.
 
-Why this matters:
+Why this matters at the environment layer:
 
 - efficiency
 - less improvisation
@@ -432,11 +438,13 @@ A strong agent environment gives the model:
 
 When these are weak, the system becomes opaque. When they are explicit, the system becomes controllable.
 
+That is the setup for the next section. `# V` is not another pass over the same abstractions. It is what those abstractions look like inside one concrete terminal-native harness.
+
 ---
 
 # V. Claude Code
 
-Claude Code is one of the clearest examples of a terminal-native local-agent harness because it makes the execution contract explicit.
+Section `IV` described the general environment pattern. Claude Code is a useful next step because it shows that pattern inside one concrete harness with explicit tools, permissions, artifacts, and workflow.
 
 ## Why Claude Code Is A Good Reference Example
 
@@ -448,7 +456,7 @@ Claude Code makes five important things visible:
 4. the model is constrained by permissions and approval rules
 5. the model can create durable artifacts that survive the current turn
 
-That combination is what makes the environment interesting.
+That combination is what makes the harness useful as a reference example. The value of Claude Code here is not brand recognition. It is that the environment contract is exposed clearly enough to inspect.
 
 ## The Basic Execution Model
 
@@ -461,11 +469,11 @@ At a high level, Claude Code behaves like this:
 5. check the result against the real system
 6. continue until the task is complete or blocked
 
-This is much closer to supervised systems work than to plain chat.
+This is much closer to supervised systems work than to plain chat. The pattern is familiar from `# IV`; what matters here is seeing how one real harness exposes it to the operator.
 
 ## Filesystem Access
 
-Filesystem access changes the quality of reasoning because it grounds the model in real project state.
+In Claude Code, filesystem access grounds the model in real project state instead of inferred project state.
 
 With filesystem access, the system can:
 
@@ -475,11 +483,11 @@ With filesystem access, the system can:
 - update code and docs in place
 - leave behind plans, summaries, and handoff files
 
-That is why local-agent work can be cumulative. The important state is not only inside the model's context window. It also exists on disk.
+That is why local-agent work can be cumulative. The important state is not only inside the model's context window. It also exists on disk in the repository and in the artifacts the harness leaves behind.
 
 ## Shell Access
 
-Shell access turns the environment from a read/write document surface into an execution surface.
+In Claude Code, shell access turns the environment from a read/write document surface into an execution surface.
 
 With shell access, the system can:
 
@@ -490,11 +498,11 @@ With shell access, the system can:
 - check git state
 - run project-specific tooling
 
-This matters because the environment gives the model direct feedback. A failing test, a bad exit code, or a compiler error is more reliable than generated prose.
+This matters because the harness gives the model direct feedback from the real system. A failing test, a bad exit code, or a compiler error is more reliable than generated prose about what probably happened.
 
 ## Shell And Structured Tools
 
-Claude Code is not only "a model with bash." It also exposes structured tools with narrower contracts.
+Claude Code is not only "a model with bash." It also exposes structured tools with narrower contracts for actions that benefit from more explicit boundaries.
 
 Structured tools matter because they:
 
@@ -519,7 +527,7 @@ In practice that means actions may fall into categories such as:
 
 This is not incidental friction. It is part of the system design.
 
-A capable agent environment should make it clear:
+A capable harness should make it clear:
 
 - what the model can do immediately
 - what requires confirmation
@@ -530,7 +538,7 @@ Without this, autonomy becomes unsafe very quickly.
 
 ## Artifacts And Continuity
 
-One of the most important properties of Claude Code-style work is that it can accumulate durable artifacts.
+One of the most important properties of Claude Code-style work is that it can accumulate durable artifacts while the task is in progress.
 
 Examples:
 
@@ -540,7 +548,7 @@ Examples:
 - a checklist for verification
 - a patch or diff for human review
 
-These artifacts do real coordination work. They preserve intent, support recovery, and make handoff possible.
+These artifacts do real coordination work. They preserve intent, support recovery, and make handoff possible inside one harness session and across later sessions.
 
 ## Delegation And Subagents
 
@@ -569,13 +577,13 @@ A more reliable rhythm looks like:
 5. verify
 6. summarize what changed
 
+This is where the harness perspective becomes concrete. The rhythm is not just advice about how an agent should behave. It is the practical cadence the environment makes possible.
+
 ## Why Claude Code Feels Different From Chat
 
-Plain chat is mostly advisory.
+Plain chat is mostly advisory. Claude Code-style work is operational.
 
-Claude Code-style work is operational.
-
-The system is not only describing what should happen. It can:
+The system is not only describing what should happen in theory. It can:
 
 - inspect the actual repo
 - change the actual repo
@@ -598,13 +606,13 @@ Common problems:
 - delegating overlapping work
 - losing control of scope
 
-This is why the surrounding engineering matters so much.
+This is why the surrounding engineering matters so much: more capability means the failure modes become more consequential, not less.
 
 ---
 
 # VI. Spec-Driven Engineering
 
-Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how capable local-agent systems get turned into bounded engineering work that can actually be trusted.
+Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how those capabilities get turned into bounded engineering work that can actually be trusted.
 
 ## Framing Decides What Work Exists
 
@@ -628,7 +636,7 @@ Framing identifies the target. Research corrects the picture. Workflow design de
 
 This is the layer that chooses sequencing, decomposition, checkpoints, and feedback loops. Should the task be handled in one pass or split into smaller units? What artifacts need to be created before execution begins? Where should verification happen? What should stop progress and force a review? Those are workflow-design questions, and they matter because capable agents can move quickly in the wrong direction if the motion itself is poorly structured.
 
-Workflow design is therefore the bridge between understanding and execution. It converts a researched problem into an approach that is paced, inspectable, and recoverable instead of improvisational.
+Workflow design is therefore the bridge between understanding and execution. It converts a researched problem into an approach that is paced, inspectable, and recoverable instead of improvisational. In practice, this is where a vague "just do it" request becomes explicit units of work, checkpoints, and review surfaces.
 
 ## Specs Are The Execution Contract
 
@@ -696,6 +704,8 @@ It answers questions like:
 - what plan is active?
 - what has been verified?
 - what is the next command?
+
+The skill reference below is not an appendix bolted onto the guide. It is the visible command surface of that workflow layer.
 
 ## Full GSD Skill Reference
 
