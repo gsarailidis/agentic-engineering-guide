@@ -38,6 +38,15 @@
   - [The Real Working Rhythm](#the-real-working-rhythm)
   - [Why Claude Code Feels Different From Chat](#why-claude-code-feels-different-from-chat)
   - [Common Failure Modes](#common-failure-modes)
+- [V.5 Context Window Management](#v5-context-window-management)
+  - [The Tradeoff: Sufficiency vs Bloat](#the-tradeoff-sufficiency-vs-bloat)
+  - [What the Model Actually Has Access To](#what-the-model-actually-has-access-to)
+  - [The Real Failure Modes](#the-real-failure-modes)
+  - [What “Context Window Management” Means](#what-context-window-management-means)
+  - [The Three Context Layers](#the-three-context-layers)
+  - [Design Implications](#design-implications)
+  - [Practical Patterns](#practical-patterns)
+  - [Relationship to the Next Section](#relationship-to-the-next-section)
 - [VI. Spec-Driven Engineering](#vi-spec-driven-engineering)
   - [Framing Decides What Work Exists](#framing-decides-what-work-exists)
   - [Research Changes What The Agent Should Believe](#research-changes-what-the-agent-should-believe)
@@ -610,23 +619,221 @@ This is why the surrounding engineering matters so much: more capability means t
 
 ---
 
+# V.5 Context Window Management
+
+Before specs, there is a more basic constraint:
+
+**the model only knows what is inside its context window.**
+
+This creates a fundamental tension:
+
+- **too little context -> the model guesses**
+- **too much context -> the model degrades**
+
+This is the core of context window management.
+
+You are not just supplying information. You are **controlling the model's working set**.
+
+## The Tradeoff: Sufficiency vs Bloat
+
+The model needs **enough context to act correctly**, but not so much that signal gets buried.
+
+Two failure directions:
+
+- **Context insufficiency**
+  - missing files, constraints, or decisions
+  - leads to incorrect assumptions and wrong execution
+- **Context bloat**
+  - too much irrelevant or low-priority information
+  - leads to weaker reasoning, distraction, and higher cost
+
+This is not linear. More context does not mean better performance.
+
+At some point, adding information **reduces accuracy instead of improving it**.
+
+## What The Model Actually Has Access To
+
+At any step, the model operates on:
+
+1. **current context window**
+2. **what it can fetch via tools**
+3. **what has been externalized into artifacts**
+
+It does *not* have:
+
+- stable memory across steps
+- implicit awareness of the full repo
+- guaranteed continuity from earlier reasoning
+
+If something is not in one of those three surfaces, it effectively does not exist.
+
+## The Real Failure Modes
+
+In practice, most agent failures reduce to context issues:
+
+- **omission** -> key information never included
+- **bloat** -> too much noise in the window
+- **drift** -> context becomes outdated over time
+- **hidden state** -> important decisions exist but are not accessible
+
+These are upstream of planning and execution. If context is wrong, everything downstream inherits that error.
+
+## What "Context Window Management" Means
+
+Context window management is the discipline of:
+
+> **deciding what enters the window, what stays out, and when it is refreshed**
+
+It has four levers:
+
+- **selection** -> what is included
+- **compression** -> how it is summarized
+- **structure** -> how it is organized
+- **refresh** -> when it is reloaded or revalidated
+
+This is not prompt formatting. It is **state control**.
+
+## The Three Context Layers
+
+A useful way to think about it:
+
+### 1. Active Context (in-window)
+
+What the model sees right now:
+
+- current task
+- active plan
+- exact files or snippets needed
+
+Constraint: **must stay tight and relevant**
+
+### 2. Retrieved Context (on-demand)
+
+What the model can pull when needed:
+
+- file reads
+- code search
+- docs lookup
+
+Purpose: **depth without bloat**
+
+### 3. Durable Context (externalized)
+
+What persists outside the window:
+
+- plans
+- summaries
+- state files
+- specs
+
+Purpose: **continuity without overload**
+
+## Design Implications
+
+A few non-negotiable rules emerge:
+
+- **Do not rely on memory**
+  - if it matters, store it and reload it
+- **keep the active window minimal**
+  - optimize for the *next action*, not full awareness
+- **externalize early**
+  - plans, decisions, and results should live in artifacts
+- **re-ground before acting**
+  - re-check files and assumptions instead of trusting prior context
+- **treat context as infrastructure**
+  - this is a data pipeline and state system, not just prompting
+
+## Practical Patterns
+
+**Plan -> Execute -> Summarize -> Reload**
+
+- create a plan artifact
+- execute against it
+- summarize what changed
+- reload the summary into context
+
+This maintains continuity without bloat.
+
+**Narrow Before Acting**
+
+- fetch only the exact files needed
+- avoid broad or full-repo reads
+
+This prevents context pollution.
+
+**Evidence Before Decision**
+
+- re-fetch current state before deciding
+- do not rely on earlier context blindly
+
+This reduces drift and hidden errors.
+
+## Relationship to the Next Section
+
+Context window management answers:
+
+> **"what does the agent actually know right now?"**
+
+Spec-driven engineering answers:
+
+> **"what should the agent do with that knowledge?"**
+
+If context is wrong, specs fail.
+
+If context is controlled, specs become enforceable.
+
+---
+
 # VI. Spec-Driven Engineering
 
 Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how those capabilities get turned into bounded engineering work that can actually be trusted.
 
 ## Framing Decides What Work Exists
 
-The first failure mode is not bad execution. It is solving the wrong problem. A loose request gives the agent too many possible interpretations, so it fills the gap with its own guess about what matters. That guess may still produce activity, edits, and even passing checks, but it can miss the real target completely.
+The first failure mode is not bad execution. It is solving the wrong problem.
 
-Problem framing decides what work exists by deciding what the task is really trying to change, what constraints are fixed, and where the boundaries are. A strong frame names the outcome, the protected surfaces, and the reason the work matters. It turns "do something in this area" into "change this specific thing for this reason without spilling into adjacent work."
+A loose request gives the agent too many possible interpretations, so it fills the gap with its own guess about what matters. That guess may still produce activity, edits, and even passing checks, but it can miss the real target completely.
+
+Problem framing decides what work exists by deciding:
+
+- what the task is really trying to change
+- what constraints are fixed
+- where the boundaries are
+
+A strong frame names:
+
+- the outcome
+- the protected surfaces
+- the reason the work matters
+
+It turns "do something in this area" into "change this specific thing for this reason without spilling into adjacent work."
 
 That is why framing is not just prompt polish. It is the first scope control. If the frame is vague, every later step inherits that vagueness.
 
 ## Research Changes What The Agent Should Believe
 
-Once the work is framed, the next question is whether the current understanding is actually true. Local agents can inspect the codebase, read docs, check configs, run commands, and compare claims against the live environment. That means research is not optional background reading. It is the mechanism that replaces assumption with evidence.
+Once the work is framed, the next question is whether the current understanding is actually true.
 
-Research changes what the agent should believe about the task. It may reveal that the important file is somewhere else, that an existing constraint makes the original approach invalid, or that a supposed gap is already covered. A short contrast makes the point: "improve onboarding" is still mostly guesswork, but "reduce first-run setup confusion after checking the current setup path, error messages, and docs" gives the work a factual base.
+Local agents can:
+
+- inspect the codebase
+- read docs
+- check configs
+- run commands
+- compare claims against the live environment
+
+That means research is not optional background reading. It is the mechanism that replaces assumption with evidence.
+
+Research changes what the agent should believe about the task. It may reveal:
+
+- that the important file is somewhere else
+- that an existing constraint makes the original approach invalid
+- that a supposed gap is already covered
+
+A short contrast makes the point:
+
+- "improve onboarding" is still mostly guesswork
+- "reduce first-run setup confusion after checking the current setup path, error messages, and docs" gives the work a factual base
 
 Good research narrows uncertainty before execution starts. It tells the system what is real in this repository, this environment, and this documentation set instead of what sounded plausible at the start.
 
@@ -634,19 +841,76 @@ Good research narrows uncertainty before execution starts. It tells the system w
 
 Framing identifies the target. Research corrects the picture. Workflow design decides how the work should move from there.
 
-This is the layer that chooses sequencing, decomposition, checkpoints, and feedback loops. Should the task be handled in one pass or split into smaller units? What artifacts need to be created before execution begins? Where should verification happen? What should stop progress and force a review? Those are workflow-design questions, and they matter because capable agents can move quickly in the wrong direction if the motion itself is poorly structured.
+This is the layer that chooses:
 
-Workflow design is therefore the bridge between understanding and execution. It converts a researched problem into an approach that is paced, inspectable, and recoverable instead of improvisational. In practice, this is where a vague "just do it" request becomes explicit units of work, checkpoints, and review surfaces.
+- sequencing
+- decomposition
+- checkpoints
+- feedback loops
+
+Typical workflow-design questions:
+
+- should the task be handled in one pass or split into smaller units?
+- what artifacts need to be created before execution begins?
+- where should verification happen?
+- what should stop progress and force a review?
+
+Those are workflow-design questions, and they matter because capable agents can move quickly in the wrong direction if the motion itself is poorly structured.
+
+Workflow design is therefore the bridge between understanding and execution.
+
+It converts a researched problem into an approach that is:
+
+- paced
+- inspectable
+- recoverable
+
+instead of improvisational.
+
+In practice, this is where a vague "just do it" request becomes explicit units of work, checkpoints, and review surfaces.
 
 ## Specs Are The Execution Contract
 
 A spec is the execution contract.
 
-The earlier steps matter because they produce the material that the contract must capture. Framing defines the real target. Research defines what is actually true. Workflow design defines how the work should proceed. The spec turns those decisions into the explicit artifact that governs execution.
+The earlier steps matter because they produce the material that the contract must capture.
 
-That contract should make the work legible before implementation begins. It names what is in `scope`, which `assumptions` are being made, which `artifacts` should exist when the work is done, what evidence counts, and what `verification` will decide whether the result is acceptable. It also makes absence visible. If scope is missing, the task can expand without limit. If assumptions are hidden, the plan can be built on fiction. If artifacts are unnamed, the work has no concrete outputs. If verification is weak, completion becomes a matter of vibe.
+- Framing defines the real target.
+- Research defines what is actually true.
+- Workflow design defines how the work should proceed.
+- The spec turns those decisions into the explicit artifact that governs execution.
 
-This is why specs matter so much in local-agent engineering. The agent already knows how to read, edit, run, and check. The harder problem is making sure those capabilities are aimed through an explicit contract instead of through a loose intention. A good spec does not add bureaucracy. It reduces ambiguity, bounds autonomy, and creates a shared reference for execution, review, and recovery.
+That contract should make the work legible before implementation begins. It names:
+
+- what is in `scope`
+- which `assumptions` are being made
+- which `artifacts` should exist when the work is done
+- what evidence counts
+- what `verification` will decide whether the result is acceptable
+
+It also makes absence visible.
+
+- If scope is missing, the task can expand without limit.
+- If assumptions are hidden, the plan can be built on fiction.
+- If artifacts are unnamed, the work has no concrete outputs.
+- If verification is weak, completion becomes a matter of vibe.
+
+This is why specs matter so much in local-agent engineering.
+
+The agent already knows how to:
+
+- read
+- edit
+- run
+- check
+
+The harder problem is making sure those capabilities are aimed through an explicit contract instead of through a loose intention.
+
+A good spec does not add bureaucracy. It:
+
+- reduces ambiguity
+- bounds autonomy
+- creates a shared reference for execution, review, and recovery
 
 Once those contracts, artifacts, and verification loops are made explicit, they can be packaged into a framework with reusable workflow structure. That is the handoff into `# VII`: GSD is one concrete example of that framework layer built on top of the local-agent environment described so far.
 
@@ -655,6 +919,8 @@ Once those contracts, artifacts, and verification loops are made explicit, they 
 # VII. GSD As A Workflow Framework
 
 GSD is a workflow framework layered on top of the kind of local-agent environment and workflow-design layer described above.
+
+Repository: `https://github.com/gsd-build/get-shit-done`
 
 Layer boundary:
 
@@ -678,7 +944,22 @@ Instead of relying on operator memory, it turns workflow state into visible arti
 
 ## The Core GSD Lifecycle
 
-Typical lifecycle:
+GSD does not have one universal lifecycle. The workflow differs depending on whether the project is greenfield or brownfield.
+
+Typical greenfield lifecycle:
+
+1. `gsd-new-project`: initialize the project definition and core planning artifacts
+2. `gsd-new-milestone`: start the first milestone and route into requirements and roadmap work
+3. `gsd-discuss-phase`: narrow the phase boundary
+4. `gsd-research-phase`: gather implementation evidence when needed
+5. `gsd-plan-phase`: turn scope into execution artifacts
+6. `gsd-execute-phase`: carry out the phase
+7. `gsd-add-tests`: close testing gaps
+8. `gsd-verify-work`: check user-facing behavior
+9. `gsd-validate-phase`: audit structural completeness
+10. `gsd-complete-milestone`: archive the shipped milestone and prepare for the next one
+
+Typical brownfield lifecycle:
 
 1. `gsd-progress`: inspect current state
 2. `gsd-map-codebase`: build shared repo context when needed
@@ -690,6 +971,8 @@ Typical lifecycle:
 8. `gsd-verify-work`: check user-facing behavior
 9. `gsd-validate-phase`: audit structural completeness
 10. `gsd-pause-work` or `gsd-complete-milestone`: preserve or close state
+
+The difference matters because brownfield work starts from an existing codebase and existing constraints, while greenfield work starts by creating the planning structure that later phases will rely on.
 
 ## Why GSD Matters
 
