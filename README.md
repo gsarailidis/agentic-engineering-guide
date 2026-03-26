@@ -2,16 +2,6 @@
 
 This repo contains a technical guide about terminal-native local agents and the engineering patterns around them.
 
-Main document:
-
-- [AgenticEngineeringGuide.md](./AgenticEngineeringGuide.md)
-
-Supporting files:
-
-- [scripts/update-guide-toc.mjs](./scripts/update-guide-toc.mjs) regenerates the guide table of contents from headings
-- `AgenticEngineeringGuide.backup-2026-03-25.md` is a manual backup snapshot
-- `AgenticEngineeringGuide.pre-user-edits-2026-03-24.md` preserves an earlier guide state for comparison
-
 The guide covers:
 
 - agentic behavior and agentic engineering basics
@@ -20,3 +10,11 @@ The guide covers:
 - context window management
 - spec-driven engineering
 - GSD as a workflow framework layered on top
+
+Main document:
+
+- [AgenticEngineeringGuide.md](./AgenticEngineeringGuide.md)
+
+Supporting files:
+
+- This guide has been written with the assistance of GSD on top of Codex CLI. The rest of the files in the repo are the artifacts of this process.
