@@ -1,6 +1,8 @@
 ## Contents
 
 - [Introduction](#introduction)
+  - [What This Guide Covers](#what-this-guide-covers)
+  - [TL;DR](#tl;dr)
 - [I. Agentic AI (the behavior)](#i-agentic-ai-the-behavior)
 - [II. Agentic Engineering (the discipline)](#ii-agentic-engineering-the-discipline)
   - [Control of the loop](#control-of-the-loop)
@@ -38,69 +40,79 @@
   - [The Real Working Rhythm](#the-real-working-rhythm)
   - [Why Claude Code Feels Different From Chat](#why-claude-code-feels-different-from-chat)
   - [Common Failure Modes](#common-failure-modes)
+  - [Effective Usage Patterns for Larger Tasks](#effective-usage-patterns-for-larger-tasks)
 - [VI. Context Window Management](#vi-context-window-management)
   - [The Tradeoff: Sufficiency vs Bloat](#the-tradeoff-sufficiency-vs-bloat)
   - [What The Model Actually Has Access To](#what-the-model-actually-has-access-to)
   - [The Real Failure Modes](#the-real-failure-modes)
   - [What "Context Window Management" Means](#what-context-window-management-means)
-  - [The Three Context Layers](#the-three-context-layers)
+  - [The Two Context Layers](#the-two-context-layers)
+    - [1. Active Context (in-window)](#1-active-context-in-window)
+    - [2. Durable Context (externalized)](#2-durable-context-externalized)
   - [Design Implications](#design-implications)
   - [Practical Patterns](#practical-patterns)
-  - [Relationship to the Next Section](#relationship-to-the-next-section)
 - [VII. Spec-Driven Engineering](#vii-spec-driven-engineering)
-  - [Framing Decides What Work Exists](#framing-decides-what-work-exists)
-  - [Research Changes What The Agent Should Believe](#research-changes-what-the-agent-should-believe)
-  - [Workflow Design Determines How Work Moves](#workflow-design-determines-how-work-moves)
-  - [Specs Are The Execution Contract](#specs-are-the-execution-contract)
+  - [Framing](#framing)
+  - [Research](#research)
+  - [Workflow Design](#workflow-design)
+  - [Specs](#specs)
 - [VIII. GSD As A Workflow Framework](#viii-gsd-as-a-workflow-framework)
+  - [Alternatives](#alternatives)
   - [What GSD Adds](#what-gsd-adds)
   - [The Core GSD Lifecycle](#the-core-gsd-lifecycle)
   - [Why GSD Matters](#why-gsd-matters)
-  - [Full GSD Skill Reference](#full-gsd-skill-reference)
+  - [GSD Skill Reference](#gsd-skill-reference)
     - [Project Setup And Configuration](#project-setup-and-configuration)
     - [Discovery And Planning](#discovery-and-planning)
     - [Execution And Debugging](#execution-and-debugging)
     - [Validation And Review](#validation-and-review)
     - [Roadmap And Milestone Maintenance](#roadmap-and-milestone-maintenance)
     - [Continuity And Utilities](#continuity-and-utilities)
-
----
+- [Further Study](#further-study)
 
 # Introduction
 
-This guide is about agentic engineering in local, tool-using environments.
+This guide is about **agentic engineering in local, tool-using environments**.
 
-More specifically, it is about development-time terminal-native agent work: systems where a model is not only generating text, but is operating inside a real workspace with files, commands, tools, permissions, and durable artifacts.
+More specifically, it is about understanding and using **development-time terminal-native agents**: systems where a model is not only generating text, but is _operating inside a real workspace with files, commands, tools, permissions, and durable artifacts_.
 
-That is not the same thing as a production-system agent embedded in a shipped product or backend service. However, those systems have related concerns. Understanding the local development environment also helps clarify how production agents with similar capabilities are designed.
+The focus of this guide may be on development work, however, _production-system agents_ have many of the same concerns: context window management, agent harnesses, durable storage surfaces such as the local filesystem, broad tool access through interfaces such as the command-line interface (CLI), skills, spec-driven engineering, and complex, often dynamic, workflow design.
 
-What the guide covers:
+Understanding the local development environment also helps clarify how production agents with similar capabilities are designed. The aim of this guide is to assist engineers in both of these fields of work.
 
-- the minimal concepts needed to talk clearly about agentic behavior and agentic engineering
-- the vocabulary that the guide uses
+Also note that a common pattern arising is _using development-time agents to build production-system agents_.
+
+## What This Guide Covers
+
+The guide covers:
+
+- the fundamental concepts in agentic engineering
 - the structure of terminal-native agent environments
 - Claude Code as a detailed concrete harness example
-- spec-driven engineering; the workflow-design layer that sits above the harness
-- GSD as a workflow framework built on top of that kind of environment
+- context management
+- spec-driven engineering
+- GSD as a high-level workflow-design framework
 
-How the guide is paced:
+## TL;DR
 
-- the introduction sets the subject, scope, and reading path
-- sections `I-III` are minimal prerequisites, not a full survey
-- the framework section explains the environment-level operating patterns in moderate depth
-- the Claude Code section is intentionally more detailed and concrete
-- the workflow-design section explains how framing, research, workflow design, and specs turn capable local agents into bounded engineering work
-- the GSD section explains structure, lifecycle, and skill surface
+The quick picture is:
 
-The goal is to give a clear mental model of the environment, the working patterns it makes possible, and the layers that sit on top of it.
+- we have an orchestrator that loops through tool-calling LLM calls and decides what to do next; that is the agent
+- the agent has access to terminal commands and a local filesystem where it offloads context; that makes it powerful
+- certain tools like Claude Code implement this model
+- large tasks require precise planning, so structured practices are needed to take us:
+  - from _intent_
+  - to _design_
+  - to _execution plan_
+  - to _execution_
+  - to _verification_
+- that is why tools like GSD, which sit on top of harnesses such as Claude Code, are used to apply a spec-driven engineering approach
 
 ---
 
 # I. Agentic AI (the behavior)
 
 Agentic AI refers to **AI systems that act toward goals through multi-step reasoning and tool use**.
-
-This section stays narrow on purpose. It defines the minimal behavioral pattern that the rest of the guide will engineer around.
 
 Core properties:
 
@@ -127,7 +139,7 @@ Those properties describe the behavior. The next question is what it takes to ma
 
 Agentic engineering is the **software engineering discipline required to make agentic systems useful, controllable, and reliable**.
 
-In this guide, that discipline matters because the system is not acting in the abstract. It is operating through explicit loops, tools, permissions, and checks in a real workspace.
+An agentic system is not acting in the abstract. It is operating through explicit loops, tools, permissions, and checks in a real workspace.
 
 It therefore deals with:
 
@@ -179,8 +191,6 @@ It therefore deals with:
 
 Without explicit engineering, the system degrades into improvisation: unclear loops, weak boundaries, and unreliable outcomes.
 
-These concerns are the bridge into the rest of the guide. The following sections define the terms, then show how those concerns become visible in an actual local-agent environment.
-
 ---
 
 # III. Definitions
@@ -195,7 +205,7 @@ An **agent** is a system that:
 4. observes results
 5. repeats until completion
 
-What makes this an agent rather than a one-shot tool call is the loop.
+What makes this an agent rather than a plain tool-using LLM call is the loop and the ability to decide what action to do next.
 
 ---
 
@@ -217,9 +227,9 @@ The harness is the control system around the model: it is what turns model capab
 Examples:
 
 - Claude Code runtime
-- LangGraph loops
 - OpenAI agent frameworks
-- custom orchestrators
+- LangGraph loops
+- custom orchestrators (e.g., using n8n)
 
 ---
 
@@ -336,11 +346,9 @@ Examples:
 
 # IV. Agentic Frameworks
 
-This guide is about **local tool-using agent environments**.
+The important shift in **local tool-using agent environments** is that the model operates inside a real workspace it can inspect and change.
 
-The important shift is not "the model can call a tool." The important shift is that the model operates inside a real workspace it can inspect and change.
-
-Claude Code and Codex CLI are useful examples because they make this contract visible. This section stays at the environment layer. The next section shows what the same pattern looks like inside one concrete harness.
+Claude Code and Codex CLI are useful examples because they make this contract visible. This section stays at the environment layer. The next section shows what the same pattern looks like inside one concrete harness, Claude Code.
 
 ## Terminal-Native Agent Environments
 
@@ -372,7 +380,7 @@ In practice:
 - `check`: run tests, inspect output, review diffs, validate contracts
 - `iterate`: adjust based on evidence
 
-This is still the pattern layer. The point is not that every harness looks identical. The point is that local-agent work repeatedly converges on this kind of inspect-plan-act-check loop when the environment is designed well.
+This is still the pattern layer. The point is not that every harness looks identical. The point is that local-agent work repeatedly converges on this kind of inspect-plan-act-check loop.
 
 ## Artifacts As Control Surfaces
 
@@ -434,8 +442,6 @@ Recovery should be bounded:
 
 ## Design Implication
 
-The main design question at the environment layer is not "which model?" It is "what operating system surrounds the model?"
-
 A strong agent environment gives the model:
 
 - a real workspace
@@ -447,13 +453,11 @@ A strong agent environment gives the model:
 
 When these are weak, the system becomes opaque. When they are explicit, the system becomes controllable.
 
-That is the setup for the next section. `# V` is not another pass over the same abstractions. It is what those abstractions look like inside one concrete terminal-native harness.
+That is the setup for the next section. Section `# V` is what those abstractions look like inside one concrete terminal-native harness.
 
 ---
 
 # V. Claude Code
-
-Section `IV` described the general environment pattern. Claude Code is a useful next step because it shows that pattern inside one concrete harness with explicit tools, permissions, artifacts, and workflow.
 
 ## Why Claude Code Is A Good Reference Example
 
@@ -464,8 +468,6 @@ Claude Code makes five important things visible:
 3. the model can run shell commands
 4. the model is constrained by permissions and approval rules
 5. the model can create durable artifacts that survive the current turn
-
-That combination is what makes the harness useful as a reference example. The value of Claude Code here is not brand recognition. It is that the environment contract is exposed clearly enough to inspect.
 
 ## The Basic Execution Model
 
@@ -478,7 +480,7 @@ At a high level, Claude Code behaves like this:
 5. check the result against the real system
 6. continue until the task is complete or blocked
 
-This is much closer to supervised systems work than to plain chat. The pattern is familiar from `# IV`; what matters here is seeing how one real harness exposes it to the operator.
+This is much closer to supervised systems work than to plain chat.
 
 ## Filesystem Access
 
@@ -586,8 +588,6 @@ A more reliable rhythm looks like:
 5. verify
 6. summarize what changed
 
-This is where the harness perspective becomes concrete. The rhythm is not just advice about how an agent should behave. It is the practical cadence the environment makes possible.
-
 ## Why Claude Code Feels Different From Chat
 
 Plain chat is mostly advisory. Claude Code-style work is operational.
@@ -604,7 +604,7 @@ That is the key difference.
 
 ## Common Failure Modes
 
-Claude Code does not remove failure. It changes the form of failure.
+Claude Code does not remove failure.
 
 Common problems:
 
@@ -615,22 +615,22 @@ Common problems:
 - delegating overlapping work
 - losing control of scope
 
-This is why the surrounding engineering matters so much: more capability means the failure modes become more consequential, not less.
+This is why the surrounding engineering matters so much: more capability means the failure modes become more consequential.
+
+## Effective Usage Patterns for Larger Tasks
+
+Claude Code can be very effective, but larger projects introduce two requirements that must be handled explicitly.
+
+These are:
+
+- context window management, especially in order to avoid context bloat, which is the situation where the context window is so full that the LLM is struggling to work with all that unfocused context
+- effective orchestration, because the longer a task runs, the more opportunity is there to veer off the intended direction
+
+The next two sections are going to address these issues. While the section on GSD demonstrates a practical solution.
 
 ---
 
 # VI. Context Window Management
-
-Before specs, there is a more basic constraint:
-
-**the model only knows what is inside its context window.**
-
-This creates a fundamental tension:
-
-- **too little context -> the model guesses**
-- **too much context -> the model degrades**
-
-You are not just supplying information. You are **controlling the model's working set**.
 
 ## The Tradeoff: Sufficiency vs Bloat
 
@@ -639,7 +639,7 @@ The model needs **enough context to act correctly**, but not so much that signal
 Two failure directions:
 
 - **Context insufficiency**
-  - missing files, constraints, or decisions
+  - missing information, files, constraints, or decisions
   - leads to incorrect assumptions and wrong execution
 - **Context bloat**
   - too much irrelevant or low-priority information
@@ -649,7 +649,7 @@ This is not linear. More context does not mean better performance. At some point
 
 ## What The Model Actually Has Access To
 
-At any step, the model operates on three surfaces:
+At any step, the model operates across three surfaces:
 
 1. **current context window**
 2. **what it can fetch via tools**
@@ -687,9 +687,7 @@ It has four levers:
 - **structure** -> how it is organized
 - **refresh** -> when it is reloaded or revalidated
 
-This is not prompt formatting. It is **state control**.
-
-## The Three Context Layers
+## The Two Context Layers
 
 A useful way to think about it:
 
@@ -703,26 +701,18 @@ What the model sees right now:
 
 Constraint: **must stay tight and relevant**
 
-### 2. Retrieved Context (on-demand)
+### 2. Durable Context (externalized)
 
-What the model can pull when needed:
-
+Durable context persists outside the window and can be retrieved when needed:
 - file reads
 - code search
 - docs lookup
-
-Purpose: **depth without bloat**
-
-### 3. Durable Context (externalized)
-
-What persists outside the window:
-
 - plans
 - summaries
 - state files
 - specs
 
-Purpose: **continuity without overload**
+Purpose: **depth without bloat**
 
 ## Design Implications
 
@@ -764,151 +754,101 @@ This prevents context pollution.
 
 This reduces drift and hidden errors.
 
-## Relationship to the Next Section
-
-Context window management answers:
-
-> **"what does the agent actually know right now?"**
-
-Spec-driven engineering answers:
-
-> **"what should the agent do with that knowledge?"**
-
-If context is wrong, specs fail.
-
-If context is controlled, specs become enforceable.
-
 ---
 
 # VII. Spec-Driven Engineering
 
-Sections `IV` and `V` establish the environment and then one concrete harness. The next layer is the workflow-design question: how those capabilities get turned into bounded engineering work that can actually be trusted.
+Spec-driven engineering is the layer that turns agent capability into bounded work.
 
-## Framing Decides What Work Exists
+The sequence is:
 
-The first failure mode is not bad execution. It is solving the wrong problem.
+1. frame the task
+2. research the actual system
+3. design the workflow
+4. express the result as a spec
 
-A loose request gives the agent too many possible interpretations, so it fills the gap with its own guess about what matters. That guess may still produce activity, edits, and even passing checks, but it can miss the real target completely.
+The point is not documentation for its own sake. The point is to make execution constrained, reviewable, and recoverable.
 
-Problem framing decides what work exists by deciding:
+## Framing
 
-- what the task is really trying to change
-- what constraints are fixed
-- where the boundaries are
+Framing defines the task.
 
-A strong frame names:
+It determines:
 
-- the outcome
-- the protected surfaces
-- the reason the work matters
+* what is being changed
+* what is out of scope
+* what constraints are fixed
+* what outcome is expected
 
-It turns "do something in this area" into "change this specific thing for this reason without spilling into adjacent work."
+Without framing, the agent has too many degrees of freedom. It will fill missing structure with its own interpretation of the request.
 
-That is why framing is not just prompt polish. It is the first scope control. If the frame is vague, every later step inherits that vagueness.
+## Research
 
-## Research Changes What The Agent Should Believe
+After the task is framed, the agent needs an accurate picture of the current system.
 
-Once the work is framed, the next question is whether the current understanding is actually true.
+In a local tool-using environment, research means inspecting the actual workspace:
 
-Local agents can:
+* reading source files
+* checking configuration
+* reviewing documentation
+* running commands
+* comparing assumptions against the live system
+* talking with the developer
 
-- inspect the codebase
-- read docs
-- check configs
-- run commands
-- compare claims against the live environment
+This step changes the working model of the task. It may show that:
 
-That means research is not optional background reading. It is the mechanism that replaces assumption with evidence.
+* the relevant implementation surface is different than expected
+* an assumed constraint is false
+* an existing mechanism already covers part of the requirement
+* the original approach is incompatible with the current system
 
-Research changes what the agent should believe about the task. It may reveal:
+Research exists to replace plausible assumptions with repository-specific evidence and the developer's instructions.
 
-- that the important file is somewhere else
-- that an existing constraint makes the original approach invalid
-- that a supposed gap is already covered
+## Workflow Design
 
-A short contrast makes the point:
+Once the task is framed and the system has been inspected, the next question is execution structure.
 
-- "improve onboarding" is still mostly guesswork
-- "reduce first-run setup confusion after checking the current setup path, error messages, and docs" gives the work a factual base
+Workflow design determines:
 
-Good research narrows uncertainty before execution starts. It tells the system what is real in this repository, this environment, and this documentation set instead of what sounded plausible at the start.
+* sequencing
+* decomposition
+* checkpoints
+* verification points
+* stop conditions
+* handoff artifacts
 
-## Workflow Design Determines How Work Moves
+Typical decisions include:
 
-Framing identifies the target. Research corrects the picture. Workflow design decides how the work should move from there.
+* whether the task should be done in one pass or split into units
+* what should be verified before moving forward
+* what artifacts should be created before implementation
+* when progress should stop for review
 
-This is the layer that chooses:
+This is how the work becomes inspectable and controllable instead of improvised.
 
-- sequencing
-- decomposition
-- checkpoints
-- feedback loops
+## Specs
 
-Typical workflow-design questions:
+The spec is the artifact that captures the output of framing, research, and workflow design in executable form.
 
-- should the task be handled in one pass or split into smaller units?
-- what artifacts need to be created before execution begins?
-- where should verification happen?
-- what should stop progress and force a review?
+A good spec defines:
 
-Those are workflow-design questions, and they matter because capable agents can move quickly in the wrong direction if the motion itself is poorly structured.
+* `scope`
+* `constraints`
+* `assumptions`
+* `artifacts`
+* `implementation expectations`
+* `verification`
 
-Workflow design is therefore the bridge between understanding and execution.
+That gives the agent a bounded contract for execution.
 
-It converts a researched problem into an approach that is:
+A spec is useful because it makes missing structure visible.
 
-- paced
-- inspectable
-- recoverable
+If `scope` is unclear, the task expands.
+If `assumptions` are implicit, execution rests on unverified beliefs.
+If `artifacts` are undefined, outputs become vague.
+If `verification` is weak, completion is subjective.
 
-instead of improvisational.
-
-In practice, this is where a vague "just do it" request becomes explicit units of work, checkpoints, and review surfaces.
-
-## Specs Are The Execution Contract
-
-A spec is the execution contract.
-
-The earlier steps matter because they produce the material that the contract must capture.
-
-- Framing defines the real target.
-- Research defines what is actually true.
-- Workflow design defines how the work should proceed.
-- The spec turns those decisions into the explicit artifact that governs execution.
-
-That contract should make the work legible before implementation begins. It names:
-
-- what is in `scope`
-- which `assumptions` are being made
-- which `artifacts` should exist when the work is done
-- what evidence counts
-- what `verification` will decide whether the result is acceptable
-
-It also makes absence visible.
-
-- If scope is missing, the task can expand without limit.
-- If assumptions are hidden, the plan can be built on fiction.
-- If artifacts are unnamed, the work has no concrete outputs.
-- If verification is weak, completion becomes a matter of vibe.
-
-This is why specs matter so much in local-agent engineering.
-
-The agent already knows how to:
-
-- read
-- edit
-- run
-- check
-
-The harder problem is making sure those capabilities are aimed through an explicit contract instead of through a loose intention.
-
-A good spec does not add bureaucracy. It:
-
-- reduces ambiguity
-- bounds autonomy
-- creates a shared reference for execution, review, and recovery
-
-Once those contracts, artifacts, and verification loops are made explicit, they can be packaged into a framework with reusable workflow structure. That is the handoff into `# VIII`: GSD is one concrete example of that framework layer built on top of the local-agent environment described so far.
+Specs reduce ambiguity, limit scope expansion, and provide a reference for execution, review, and recovery.
 
 ---
 
@@ -916,19 +856,17 @@ Once those contracts, artifacts, and verification loops are made explicit, they 
 
 GSD (Get Shit Done) is a workflow framework layered on top of the kind of local-agent environment and workflow-design layer described above.
 
+While Claude Code or Codex CLI provide the environment, GSD provides the workflow structure on top of that environment. Or in other words, GSD organizes how work moves through the harness.
+
 Repository: `https://github.com/gsd-build/get-shit-done`
 
-Layer boundary:
+Technically, GSD is a collection of Markdown files that primarily define skills. Installing the GSD repository globally places these files into the configuration directory of the terminal-native harness being used, such as Claude Code or Codex CLI.
 
-- Claude Code or Codex CLI: provide the environment
-- GSD: provides workflow structure on top of that environment
+## Alternatives
 
-GSD does not replace the harness. It organizes how work moves through it.
+Other similar frameworks to GSD do exist, such as Speckit (https://github.com/github/spec-kit) and Superpowers (https://github.com/obra/superpowers).
 
-It is useful to distinguish two starting conditions:
-
-- **greenfield**: a project that is being structured from the beginning, before the planning and execution system exists
-- **brownfield**: an existing project where the codebase, constraints, and local conventions are already there and need to be inspected before planning good work
+Superpowers has a strong TDD (Test-Driven Development) orientation, and users often describe it as robust and well suited to large projects. GSD is designed for speed and takes a more practical, less opinionated approach. Reviews of Speckit seem to be mixed.
 
 ## What GSD Adds
 
@@ -941,11 +879,13 @@ GSD adds explicit workflow structure:
 - validation workflows
 - continuity workflows
 
-Instead of relying on operator memory, it turns workflow state into visible artifacts and reusable commands.
+Instead of relying on orchestrator memory, it turns workflow state into visible artifacts and reusable commands.
 
 ## The Core GSD Lifecycle
 
-GSD does not have one universal lifecycle. The workflow differs depending on whether the project is greenfield or brownfield.
+GSD does not have a single universal lifecycle, but some common patterns do exist. The workflow normally differs depending on whether the project is greenfield or brownfield:
+- **greenfield**: a project starting from scratch
+- **brownfield**: an existing project on which some work has already been done
 
 Typical greenfield lifecycle:
 
@@ -962,13 +902,12 @@ Typical greenfield lifecycle:
 
 Brownfield work usually enters the flow differently. Instead of starting with `gsd-new-project`, you normally start with `gsd-map-codebase` so the existing repository, constraints, and local conventions are made explicit before phase planning begins. After that, the flow returns to the same phase-oriented loop: discuss, research, plan, execute, verify, validate, and preserve state when needed.
 
-The difference matters because brownfield work starts from an existing codebase and existing constraints, while greenfield work starts by creating the planning structure that later phases will rely on.
-
 ## Why GSD Matters
 
-GSD matters because it turns workflow control into explicit structure.
-
-That improves quality by making plans, verification, checkpoints, and assumptions visible. It improves efficiency by reducing rework, limiting drift, and making it clear what the next bounded action is. It also makes long-running work resumable, because state, artifacts, and progress are preserved instead of reconstructed from memory.
+GSD turns workflow control into explicit structure, which:
+- improves quality by making plans, verification, checkpoints, and assumptions visible
+- improves efficiency by reducing rework, limiting drift, and making it clear what the next bounded action is
+- makes long-running work resumable, because state, artifacts, and progress are preserved instead of reconstructed from memory
 
 It answers questions like:
 
@@ -978,9 +917,7 @@ It answers questions like:
 - what has been verified?
 - what is the next command?
 
-The skill reference below is not an appendix bolted onto the guide. It is the visible command surface of that workflow layer.
-
-## Full GSD Skill Reference
+## GSD Skill Reference
 
 ### Project Setup And Configuration
 
@@ -1035,3 +972,17 @@ The skill reference below is not an appendix bolted onto the guide. It is the vi
 - `gsd-check-todos`: List pending todos and select one to work on.
 - `gsd-stats`: Display project statistics across phases, plans, requirements, git metrics, and timeline.
 - `gsd-join-discord`: Join the GSD Discord community.
+
+---
+
+# Further Study
+
+Read:
+- Claude Code docs: https://code.claude.com/docs/en/overview
+- Codex CLI docs: https://developers.openai.com/codex
+- Codex CLI repo (Codex CLI is open source): https://github.com/openai/codex
+
+Watch:
+- Dave Ebbelaar on: Five levels of AI agent complexity, from augmented LLMs and DAG workflows to tool-calling agents, agent harnesses, and multi-agent orchestration: https://youtu.be/BaXTos7B1vY
+- Simon Scrapes on: Seven levels of Claude Code mastery, guiding you from basic prompting all the way to building fully autonomous systems: https://youtu.be/Y09u_S3w2c8
+- Sean Grove on: Spec-Driven Engineering: https://youtu.be/8rABwKRsec4
