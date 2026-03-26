@@ -18,3 +18,5 @@ Main document:
 Supporting files:
 
 - This guide has been written with the assistance of GSD on top of Codex CLI. The rest of the files in the repo are the artifacts of this process.
+
+P.S.: Feedback is welcome
