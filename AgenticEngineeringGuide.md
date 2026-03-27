@@ -924,7 +924,7 @@ At a high level, GSD is easiest to understand as a layered system:
 - `get-shit-done/bin/`, `scripts/`, `hooks/`
   Workflows can call tools, which are the executable layer behind the prompts. In practice, this means GSD is not just static Markdown: it can trigger real operations through supporting JavaScript and Node tooling, shell helpers, and runtime hooks.
 - `agents/`
-  Workflows can also spawn subagents. These are specialized role definitions, each describing a focused responsibility such as planning, execution, verification, or codebase mapping. They let work be delegated instead of keeping everything inside one prompt.
+  Workflows can also spawn subagents. These are specialized role definitions, each describing a focused responsibility such as planning, execution, verification, or codebase mapping. They let work be delegated instead of keeping everything inside one context window.
 - `get-shit-done/references/`
   References are reusable guidance documents. They provide shared heuristics, conventions, and rulebooks that workflows and agents can load when they need stable reasoning context.
 - `get-shit-done/templates/`
