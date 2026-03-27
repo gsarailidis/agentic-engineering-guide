@@ -57,10 +57,10 @@
   - [Workflow Design](#workflow-design)
   - [Specs](#specs)
 - [VIII. GSD As A Workflow Framework](#viii-gsd-as-a-workflow-framework)
-  - [Alternatives](#alternatives)
   - [What GSD Adds](#what-gsd-adds)
   - [The Core GSD Lifecycle](#the-core-gsd-lifecycle)
   - [Why GSD Matters](#why-gsd-matters)
+  - [GSD Internals](#gsd-internals)
   - [GSD Skill Reference](#gsd-skill-reference)
     - [Project Setup And Configuration](#project-setup-and-configuration)
     - [Discovery And Planning](#discovery-and-planning)
@@ -68,6 +68,7 @@
     - [Validation And Review](#validation-and-review)
     - [Roadmap And Milestone Maintenance](#roadmap-and-milestone-maintenance)
     - [Continuity And Utilities](#continuity-and-utilities)
+  - [Alternatives](#alternatives)
 - [Further Study](#further-study)
 
 # Introduction
@@ -616,6 +617,7 @@ Common problems:
 - losing control of scope
 
 This is why the surrounding engineering matters so much: more capability means the failure modes become more consequential.
+Preventing these failures requires more than a capable harness. It requires an organized workflow that makes state, scope, verification, and next actions explicit rather than implicit.
 
 ## Effective Usage Patterns for Larger Tasks
 
@@ -626,7 +628,9 @@ These are:
 - context window management, especially in order to avoid context bloat, which is the situation where the context window is so full that the LLM is struggling to work with all that unfocused context
 - effective orchestration, because the longer a task runs, the more opportunity is there to veer off the intended direction
 
-The next two sections are going to address these issues. While the section on GSD demonstrates a practical solution.
+One of the developer's main responsibilities in this style of work is understanding context: both the internal context window and the durable, externalized context stored in files, plans, and other artifacts. Part of learning this is practical. You have to work this way, manage the lifecycle across a few short projects, and see where structure prevents drift.
+
+The next two sections are going to address these issues. The section on context window management explains the core constraint directly, while the later section on GSD shows one concrete example of a structured workflow designed to handle it in practice.
 
 ---
 
@@ -858,16 +862,6 @@ GSD (Get Shit Done) is a workflow framework layered on top of the kind of local-
 
 While Claude Code or Codex CLI provide the environment, GSD provides the workflow structure on top of that environment. Or in other words, GSD organizes how work moves through the harness.
 
-Repository: `https://github.com/gsd-build/get-shit-done`
-
-Technically, GSD is a collection of Markdown files that primarily define skills. Installing the GSD repository globally places these files into the configuration directory of the terminal-native harness being used, such as Claude Code or Codex CLI.
-
-## Alternatives
-
-Other similar frameworks to GSD do exist, such as Speckit (https://github.com/github/spec-kit) and Superpowers (https://github.com/obra/superpowers).
-
-Superpowers has a strong TDD (Test-Driven Development) orientation, and users often describe it as robust and well suited to large projects. GSD is designed for speed and takes a more practical, less opinionated approach. Reviews of Speckit seem to be mixed.
-
 ## What GSD Adds
 
 GSD adds explicit workflow structure:
@@ -916,6 +910,38 @@ It answers questions like:
 - what plan is active?
 - what has been verified?
 - what is the next command?
+
+## GSD Internals
+
+Repository: `https://github.com/gsd-build/get-shit-done`
+
+At a high level, GSD is easiest to understand as a layered system:
+
+- `skills/`
+  Each GSD capability is installed as a skill, with one `SKILL.md` file per skill. A skill is the user-facing entrypoint: it defines what the capability does, how inputs are interpreted, and which workflow should be used.
+- `get-shit-done/workflows/`
+  Each skill is usually paired with a corresponding workflow Markdown file. The mapping is close to `1:1`, though not perfectly exact. Workflows contain the orchestration logic: what context to gather, what steps to follow, when to branch, and what artifacts to produce.
+- `get-shit-done/bin/`, `scripts/`, `hooks/`
+  Workflows can call tools, which are the executable layer behind the prompts. In practice, this means GSD is not just static Markdown: it can trigger real operations through supporting JavaScript and Node tooling, shell helpers, and runtime hooks.
+- `agents/`
+  Workflows can also spawn subagents. These are specialized role definitions, each describing a focused responsibility such as planning, execution, verification, or codebase mapping. They let work be delegated instead of keeping everything inside one prompt.
+- `get-shit-done/references/`
+  References are reusable guidance documents. They provide shared heuristics, conventions, and rulebooks that workflows and agents can load when they need stable reasoning context.
+- `get-shit-done/templates/`
+  Templates are reusable output scaffolds. They define the expected structure of planning, verification, summary, and other generated artifacts so GSD can produce them consistently.
+
+When the GSD repository is installed globally, these files are placed into the configuration directory of the terminal-native harness being used, such as Claude Code or Codex CLI.
+
+A good shorthand is:
+
+- skills are the entrypoints
+- workflows are the orchestration layer
+- tools are the executable layer
+- agents are the delegation layer
+- references provide shared reasoning context
+- templates provide shared output structure
+
+So, roughly speaking, GSD is a collection of skills, each usually associated with a workflow. Those workflows can invoke tools, use references and templates, and delegate work to subagents.
 
 ## GSD Skill Reference
 
@@ -972,6 +998,12 @@ It answers questions like:
 - `gsd-check-todos`: List pending todos and select one to work on.
 - `gsd-stats`: Display project statistics across phases, plans, requirements, git metrics, and timeline.
 - `gsd-join-discord`: Join the GSD Discord community.
+
+## Alternatives
+
+Other similar frameworks to GSD do exist, such as Speckit (https://github.com/github/spec-kit) and Superpowers (https://github.com/obra/superpowers).
+
+Superpowers has a strong TDD (Test-Driven Development) orientation, and users often describe it as robust and well suited to large projects. GSD is designed for speed and takes a more practical, less opinionated approach. Reviews of Speckit seem to be mixed.
 
 ---
 
