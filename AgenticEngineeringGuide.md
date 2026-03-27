@@ -919,15 +919,15 @@ At a high level, GSD is easiest to understand as a layered system:
 
 - `skills/`
   Each GSD capability is installed as a skill, with one `SKILL.md` file per skill. A skill is the user-facing entrypoint: it defines what the capability does, how inputs are interpreted, and which workflow should be used.
-- `get-shit-done/workflows/`
+- `workflows/`
   Each skill is usually paired with a corresponding workflow Markdown file. The mapping is close to `1:1`, though not perfectly exact. Workflows contain the orchestration logic: what context to gather, what steps to follow, when to branch, and what artifacts to produce.
-- `get-shit-done/bin/`, `scripts/`, `hooks/`
+- `bin/`, `scripts/`, `hooks/`
   Workflows can call tools, which are the executable layer behind the prompts. In practice, this means GSD is not just static Markdown: it can trigger real operations through supporting JavaScript and Node tooling, shell helpers, and runtime hooks.
 - `agents/`
   Workflows can also spawn subagents. These are specialized role definitions, each describing a focused responsibility such as planning, execution, verification, or codebase mapping. They let work be delegated instead of keeping everything inside one context window.
-- `get-shit-done/references/`
+- `references/`
   References are reusable guidance documents. They provide shared heuristics, conventions, and rulebooks that workflows and agents can load when they need stable reasoning context.
-- `get-shit-done/templates/`
+- `templates/`
   Templates are reusable output scaffolds. They define the expected structure of planning, verification, summary, and other generated artifacts so GSD can produce them consistently.
 
 When the GSD repository is installed globally, these files are placed into the configuration directory of the terminal-native harness being used, such as Claude Code or Codex CLI.
